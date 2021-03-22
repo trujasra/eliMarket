@@ -14,29 +14,29 @@ class DataBaseHelper {
   static const String TABLE = 'Persona';
   static const String DB_NAME = 'db_persona.db';
 
-  Future<Database> get dbase async {
-    // Verifica si la BD es diferente de nulo
-    if (_db != null) {
-      return _db;
-    }
+  // Future<Database> get dbase async {
+  //   // Verifica si la BD es diferente de nulo
+  //   if (_db != null) {
+  //     return _db;
+  //   }
 
-    // envia al metodo para inicializar la BD
-    _db = await iniciaDB();
-    return _db;
-  }
+  //   // envia al metodo para inicializar la BD
+  //   _db = await iniciaDB();
+  //   return _db;
+  // }
 
-  iniciaDB() async {
-    io.Directory documentoDirectorio = await getApplicationDocumentsDirectory();
-    String path = join(documentoDirectorio.path, DB_NAME);
-    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
-    return db;
-  }
+  // iniciaDB() async {
+  //   io.Directory documentoDirectorio = await getApplicationDocumentsDirectory();
+  //   String path = join(documentoDirectorio.path, DB_NAME);
+  //   var db = await openDatabase(path, version: 1, onCreate: _onCreate);
+  //   return db;
+  // }
 
-  FutureOr<void> _onCreate(Database db, int version) async {
-    String sql =
-        "CREATE TABLE $TABLE ($ID INTEGER PRIMARY KEY, $NAME TEXT, $LAST_NAME TEXT)";
-    await db.execute(sql);
-  }
+  // FutureOr<void> _onCreate(Database db, int version) async {
+  //   String sql =
+  //       "CREATE TABLE $TABLE ($ID INTEGER PRIMARY KEY, $NAME TEXT, $LAST_NAME TEXT)";
+  //   await db.execute(sql);
+  // }
 
   // Future<Persona> registraPersona(Persona persona) async {
   //   var dbCliente = await dbase;
