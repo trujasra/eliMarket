@@ -6,13 +6,18 @@ import 'package:path/path.dart';
 
 class DataBaseHelper {
   static Database _db;
+  // Datos de la Base de datos
+  static const String DB_NAME = 'db_mercado.db';
+  // Datos de las tablas
+  static const String TABLA_TIPO_CATEGORIA = 'Par_tipo_categoria';
+  static const String TABLA_CATEGORIA = 'Categoria';
+  static const String TABLA_PRODUCTO = 'Producto';
+  static const String TABLA_PRODUCTO_BITACORA = 'Producto_bitacora';
 
   // Constante tabla  PAR_CATEGORIA
   static const String ID_CATEGORIA = 'id_par_categoria';
   static const String NAME = 'nombre';
   static const String LAST_NAME = 'apellidos';
-  static const String TABLE = 'Persona';
-  static const String DB_NAME = 'db_persona.db';
 
   // Future<Database> get dbase async {
   //   // Verifica si la BD es diferente de nulo
