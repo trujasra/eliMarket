@@ -14,34 +14,66 @@ class DataBaseHelper {
   static const String TABLA_PRODUCTO = 'Producto';
   static const String TABLA_PRODUCTO_BITACORA = 'Producto_bitacora';
 
-  // Constante tabla  PAR_CATEGORIA
-  static const String ID_CATEGORIA = 'id_par_categoria';
-  static const String NAME = 'nombre';
-  static const String LAST_NAME = 'apellidos';
+  // Campos para las tablas Bitacora
+  static const String ESTADO_REGISTRO = 'estado_registro';
+  static const String USUARIO_REGISTRO = 'usuario_registro';
+  static const String FECHA_REGISTRO = 'fecha_registro';
+  static const String USUARIO_MODIFICACION = 'usuario_modificacion';
+  static const String FECHA_MODIFICACION = 'fecha_modificacion';
 
-  // Future<Database> get dbase async {
-  //   // Verifica si la BD es diferente de nulo
-  //   if (_db != null) {
-  //     return _db;
-  //   }
+  // Campos tabla  PAR_TIPO_CATEGORIA
+  static const String ID_TIPO_CATEGORIA = 'id_tipo_categoria';
+  static const String TIPO_CATEGORIA = 'tipo_categoria';
 
-  //   // envia al metodo para inicializar la BD
-  //   _db = await iniciaDB();
-  //   return _db;
-  // }
+  // Campos tabla CATEGORIA
+  static const String ID_CATEGORIA = 'id_categoria';
+  static const String DESC_CATEGORIA = 'desc_categoria';
+  static const String PAR_TIPO_CATEGORIA = 'par_tipo_categoria';
+  static const String OBSERVACION = 'observacion';
+  static const String IMAGEN = 'imagen';
 
-  // iniciaDB() async {
-  //   io.Directory documentoDirectorio = await getApplicationDocumentsDirectory();
-  //   String path = join(documentoDirectorio.path, DB_NAME);
-  //   var db = await openDatabase(path, version: 1, onCreate: _onCreate);
-  //   return db;
-  // }
+  // Campos tabla PRODUCTO
+  static const String ID_PRODUCTO = 'id_producto';
+  static const String DESC_PRODUCTO = 'desc_producto';
+  static const String PRECIO = 'precio';
+  static const String LUGAR_COMPRA = 'lugar_compra';
 
-  // FutureOr<void> _onCreate(Database db, int version) async {
-  //   String sql =
-  //       "CREATE TABLE $TABLE ($ID INTEGER PRIMARY KEY, $NAME TEXT, $LAST_NAME TEXT)";
-  //   await db.execute(sql);
-  // }
+  // Campos tabla PRODUCTO_BITACORA
+  static const String ID_PRODUCTO_BITACORA = 'id_producto_bitacora';
+
+  Future<Database> get database async {
+    // Verifica si la BD es diferente de nulo
+    if (_db != null) {
+      return _db;
+    }
+
+    // envia al metodo para inicializar la BD
+    _db = await iniciaDB();
+    return _db;
+  }
+
+  iniciaDB() async {
+    io.Directory documentoDirectorio = await getApplicationDocumentsDirectory();
+    String path = join(documentoDirectorio.path, DB_NAME);
+    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
+    return db;
+  }
+
+  FutureOr<void> _onCreate(Database db, int version) async {
+    String sqlParTipoCategoria =
+        "CREATE TABLE $TABLA_TIPO_CATEGORIA ($ID_TIPO_CATEGORIA INTEGER PRIMARY KEY AUTOINCREMENT, $TIPO_CATEGORIA TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
+    String sqlCategoria =
+        "CREATE TABLE $TABLA_CATEGORIA ($ID_CATEGORIA INTEGER PRIMARY KEY AUTOINCREMENT, $DESC_CATEGORIA TEXT, $PAR_TIPO_CATEGORIA INTEGER, $OBSERVACION TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
+    String sqlProducto =
+        "CREATE TABLE $TABLA_CATEGORIA ($ID_PRODUCTO INTEGER PRIMARY KEY AUTOINCREMENT, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
+    String sqlProductoBitacora =
+        "CREATE TABLE $TABLA_CATEGORIA ($ID_PRODUCTO_BITACORA INTEGER PRIMARY KEY AUTOINCREMENT, $ID_PRODUCTO INTEGER, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
+
+    await db.execute(sqlParTipoCategoria);
+    await db.execute(sqlCategoria);
+    await db.execute(sqlProducto);
+    await db.execute(sqlProductoBitacora);
+  }
 
   // Future<Persona> registraPersona(Persona persona) async {
   //   var dbCliente = await dbase;
