@@ -1,6 +1,9 @@
+import 'package:eli_market/constantes.dart';
 import 'package:flutter/material.dart';
 
 import 'package:eli_market/pantallas/bienvenida_page.dart';
+import 'package:eli_market/pantallas/menu_page.dart';
+import 'package:eli_market/pantallas/creditos_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,9 +17,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Ely Market App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: BienvenidaPage(),
+          textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextoColor),
+          primaryColor: kPrimaryColor,
+          primaryColorDark: kPrimaryDarkColor,
+          accentColor: kAcentColor
+          // primarySwatch: Colors.purple,
+          ),
+      routes: {
+        '/': (context) => BienvenidaPage(),
+        '/Menu': (context) => MenuPage(),
+        '/Creditos': (context) => CreditosPage(),
+      },
+      initialRoute: "/",
+      // home: BienvenidaPage(),
     );
   }
 }
