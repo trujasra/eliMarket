@@ -1,3 +1,4 @@
+import 'package:eli_market/pantallas/lista_producto_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -73,26 +74,34 @@ class MenuPage extends StatelessWidget {
   }
 
   Widget detalleMenu(BuildContext context, String vlista) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-            child: Container(
-          padding: EdgeInsets.all(kDefaultPaddin),
-          height: 180,
-          width: 160,
-          decoration: BoxDecoration(
-              color: kPrimaryColor, borderRadius: BorderRadius.circular(16)),
-          child: null,
-        )),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: kDefaultPaddin),
-          child: Text(
-            vlista,
-            style: TextStyle(color: kPrimaryDarkColor),
-          ),
-        )
-      ],
+    return GestureDetector(
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => ListaProductoPage(
+                    miProducto: vlista,
+                  ))),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+              child: Container(
+            padding: EdgeInsets.all(kDefaultPaddin),
+            height: 180,
+            width: 160,
+            decoration: BoxDecoration(
+                color: kPrimaryColor, borderRadius: BorderRadius.circular(16)),
+            child: Image.asset("assets/imagenes/bag_5.png"),
+          )),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: kDefaultPaddin),
+            child: Text(
+              vlista,
+              style: TextStyle(color: kPrimaryDarkColor),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

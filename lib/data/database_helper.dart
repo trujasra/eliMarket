@@ -4,8 +4,12 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
+import 'package:eli_market/models/categoria.dart';
+
 class DataBaseHelper {
-  static Database _db;
+  static final DataBaseHelper db = DataBaseHelper._();
+  static Database _database;
+
   // Datos de la Base de datos
   static const String DB_NAME = 'db_mercado.db';
   // Datos de las tablas
@@ -41,15 +45,17 @@ class DataBaseHelper {
   // Campos tabla PRODUCTO_BITACORA
   static const String ID_PRODUCTO_BITACORA = 'id_producto_bitacora';
 
+  DataBaseHelper._();
+
   Future<Database> get database async {
     // Verifica si la BD es diferente de nulo
-    if (_db != null) {
-      return _db;
+    if (_database != null) {
+      return _database;
     }
 
     // envia al metodo para inicializar la BD
-    _db = await iniciaDB();
-    return _db;
+    _database = await iniciaDB();
+    return _database;
   }
 
   iniciaDB() async {
@@ -65,14 +71,41 @@ class DataBaseHelper {
     String sqlCategoria =
         "CREATE TABLE $TABLA_CATEGORIA ($ID_CATEGORIA INTEGER PRIMARY KEY AUTOINCREMENT, $DESC_CATEGORIA TEXT, $PAR_TIPO_CATEGORIA INTEGER, $OBSERVACION TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
     String sqlProducto =
-        "CREATE TABLE $TABLA_CATEGORIA ($ID_PRODUCTO INTEGER PRIMARY KEY AUTOINCREMENT, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
+        "CREATE TABLE $TABLA_PRODUCTO ($ID_PRODUCTO INTEGER PRIMARY KEY AUTOINCREMENT, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
     String sqlProductoBitacora =
-        "CREATE TABLE $TABLA_CATEGORIA ($ID_PRODUCTO_BITACORA INTEGER PRIMARY KEY AUTOINCREMENT, $ID_PRODUCTO INTEGER, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
+        "CREATE TABLE $TABLA_PRODUCTO_BITACORA ($ID_PRODUCTO_BITACORA INTEGER PRIMARY KEY AUTOINCREMENT, $ID_PRODUCTO INTEGER, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
 
+    // Crea las tablas de la BD
     await db.execute(sqlParTipoCategoria);
     await db.execute(sqlCategoria);
     await db.execute(sqlProducto);
     await db.execute(sqlProductoBitacora);
+
+    // Crea por defecto registros para la tabla categoria
+    await db.execute(
+        "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
+        [
+          "Verduras",
+          1,
+          "Registro insertado por defecto",
+          "assets/imagenes/bag_5.png",
+          true,
+          "usuario_prueba",
+          "2021-03-24 16:56:00"
+        ]);
+  }
+
+  Future<List<Categoria>> obtieneCategoria() async {
+    var dbClient = await database;
+    // List<Map> maps = await dbClient.query(TABLA_CATEGORIA, columns: [ID, NAME, LAST_NAME]);
+    List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLA_CATEGORIA");
+    List<Categoria> listaCategoria = [];
+    if (maps.length > 0) {
+      for (int i = 0; i < maps.length; i++) {
+        listaCategoria.add(Categoria.fromMap(maps[i]));
+      }
+    }
+    return listaCategoria;
   }
 
   // Future<Persona> registraPersona(Persona persona) async {
