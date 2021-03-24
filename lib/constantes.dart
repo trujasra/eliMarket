@@ -15,3 +15,5 @@ const Color kPrimaryLigthColor = Color.fromRGBO(245, 217, 251, 1);
 const Color kAcentColor = Color.fromRGBO(211, 0, 235, 1);
 
 const Color kIconPrimaryColor = Color.fromRGBO(247, 233, 250, 1);
+
+const kDefaultPaddin = 20.0;
