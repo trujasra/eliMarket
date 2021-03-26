@@ -33,7 +33,7 @@ class ParTipoCategoria {
   ParTipoCategoria.fromMap(Map<String, dynamic> map) {
     idTipoCategoria = map["id_tipo_categoria"];
     tipoCategoria = map["tipo_categoria"];
-    estadoRegistro = map["estado_registro"];
+    estadoRegistro = map["estado_registro"] == 0 ? false : true;
     usuarioRegistro = map["usuario_registro"];
     fechaRegistro = map["fecha_registro"];
     usuarioModificacion = map["usuario_modificacion"];

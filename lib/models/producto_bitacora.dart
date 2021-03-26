@@ -56,7 +56,7 @@ class ProductoBitacora {
     observacion = map["observacion"];
     lugarCompra = map["lugarCompra"];
     imagen = map["imagen"];
-    estadoRegistro = map["estado_registro"];
+    estadoRegistro = map["estado_registro"] == 0 ? false : true;
     usuarioRegistro = map["usuario_registro"];
     fechaRegistro = map["fecha_registro"];
     usuarioModificacion = map["usuario_modificacion"];

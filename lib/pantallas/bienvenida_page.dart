@@ -1,10 +1,9 @@
-import 'package:eli_market/data/database_helper.dart';
 import 'package:flutter/material.dart';
 
 import 'package:eli_market/constantes.dart';
 
 class BienvenidaPage extends StatelessWidget {
-  var listaCat = DataBaseHelper.db.obtieneCategoria();
+  // var listaCat = DataBaseHelper.db.obtieneCategoria();
 
   @override
   Widget build(BuildContext context) {
