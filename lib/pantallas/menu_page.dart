@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../constantes.dart';
+import 'package:eli_market/data/database_helper.dart';
+import 'package:eli_market/models/categoria.dart';
 
 class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<String> vlista = [
-      "Peras",
-      "Manzana",
-      "Higos",
-      "Duraznos",
-      "Mandarina"
-    ];
+    // List<String> vlista = [
+    //   "Peras",
+    //   "Manzana",
+    //   "Higos",
+    //   "Duraznos",
+    //   "Mandarina"
+    // ];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
@@ -53,33 +55,47 @@ class MenuPage extends StatelessWidget {
           SizedBox(
             height: 10.0,
           ),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: kDefaultPaddin),
-              child: GridView.builder(
-                  itemCount: vlista.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: kDefaultPaddin,
-                      mainAxisSpacing: kDefaultPaddin,
-                      childAspectRatio: 0.75),
-                  itemBuilder: (BuildContext context, int index) {
-                    return detalleMenu(context, vlista[index]);
-                  }),
-            ),
-          )
+          FutureBuilder(
+              future: DataBaseHelper.db.obtieneCategoria(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Categoria>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  return _listaMenuCategoria(snapshot.data);
+                }
+              }),
         ],
       ),
     );
   }
 
-  Widget detalleMenu(BuildContext context, String vlista) {
+  Widget _listaMenuCategoria(List<Categoria> listaCategoria) {
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: kDefaultPaddin),
+        child: GridView.builder(
+            itemCount: listaCategoria.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: kDefaultPaddin,
+                mainAxisSpacing: kDefaultPaddin,
+                childAspectRatio: 0.75),
+            itemBuilder: (BuildContext context, int index) {
+              Categoria oCategoria = listaCategoria[index];
+              return detalleMenu(context, oCategoria);
+            }),
+      ),
+    );
+  }
+
+  Widget detalleMenu(BuildContext context, Categoria pCategoria) {
     return GestureDetector(
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => ListaProductoPage(
-                    miProducto: vlista,
+                    oCategoria: pCategoria,
                   ))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,13 +106,14 @@ class MenuPage extends StatelessWidget {
             height: 180,
             width: 160,
             decoration: BoxDecoration(
-                color: kPrimaryColor, borderRadius: BorderRadius.circular(16)),
-            child: Image.asset("assets/imagenes/bag_5.png"),
+                color: Colors.pink[100],
+                borderRadius: BorderRadius.circular(16)),
+            child: Image.asset(pCategoria.imagen),
           )),
           Padding(
             padding: EdgeInsets.symmetric(vertical: kDefaultPaddin),
             child: Text(
-              vlista,
+              pCategoria.descCategoria,
               style: TextStyle(color: kPrimaryDarkColor),
             ),
           )

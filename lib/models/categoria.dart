@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Categoria {
   int idCategoria;
   String descCategoria;

@@ -1,13 +1,14 @@
-import 'package:eli_market/models/categoria.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../constantes.dart';
 import 'package:eli_market/data/database_helper.dart';
+import 'package:eli_market/models/categoria.dart';
 
 class ListaProductoPage extends StatelessWidget {
-  final String miProducto;
-  ListaProductoPage({this.miProducto});
+  //final String miProducto;
+  Categoria oCategoria;
+  ListaProductoPage({this.oCategoria});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class ListaProductoPage extends StatelessWidget {
               icon: SvgPicture.asset("assets/icons/search.svg"),
               onPressed: () {}),
         ],
-        title: Text(miProducto),
+        title: Text(oCategoria.descCategoria),
       ),
       body: FutureBuilder(
         future: DataBaseHelper.db.obtieneCategoria(),

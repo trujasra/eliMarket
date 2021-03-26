@@ -61,13 +61,17 @@ class DataBaseHelper {
   iniciaDB() async {
     io.Directory documentoDirectorio = await getApplicationDocumentsDirectory();
     String path = join(documentoDirectorio.path, DB_NAME);
+
+    // Delete the database //TODO: esto luego borrar
+    //await deleteDatabase(path);
+
     var db = await openDatabase(path, version: 1, onCreate: _onCreate);
     return db;
   }
 
   FutureOr<void> _onCreate(Database db, int version) async {
     String sqlParTipoCategoria =
-        "CREATE TABLE $TABLA_TIPO_CATEGORIA ($ID_TIPO_CATEGORIA INTEGER PRIMARY KEY AUTOINCREMENT, $TIPO_CATEGORIA TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
+        "CREATE TABLE $TABLA_TIPO_CATEGORIA ($ID_TIPO_CATEGORIA INTEGER PRIMARY KEY, $TIPO_CATEGORIA TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
     String sqlCategoria =
         "CREATE TABLE $TABLA_CATEGORIA ($ID_CATEGORIA INTEGER PRIMARY KEY AUTOINCREMENT, $DESC_CATEGORIA TEXT, $PAR_TIPO_CATEGORIA INTEGER, $OBSERVACION TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
     String sqlProducto =
@@ -81,17 +85,104 @@ class DataBaseHelper {
     await db.execute(sqlProducto);
     await db.execute(sqlProductoBitacora);
 
+    // Insertar por defecto los tipo de categoria
+    await db.execute(
+        "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA, $TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
+        [
+          1,
+          "Verduras y hortalizas",
+          true,
+          "ramiro.trujillo",
+          "2021-03-26 15:00:00"
+        ]);
+    await db.execute(
+        "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA,$TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
+        [2, "Frutas", true, "ramiro.trujillo", "2021-03-26 15:01:00"]);
+    await db.execute(
+        "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA,$TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
+        [
+          3,
+          "Refrescos y bebidas",
+          true,
+          "ramiro.trujillo",
+          "2021-03-26 15:02:00"
+        ]);
+    await db.execute(
+        "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA,$TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
+        [4, "Carnes y pollos", true, "ramiro.trujillo", "2021-03-26 15:03:00"]);
+    await db.execute(
+        "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA,$TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
+        [5, "Limpieza", true, "ramiro.trujillo", "2021-03-26 15:04:00"]);
+    await db.execute(
+        "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA,$TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
+        [6, "Otros", true, "ramiro.trujillo", "2021-03-26 15:05:00"]);
+
     // Crea por defecto registros para la tabla categoria
     await db.execute(
         "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
         [
-          "Verduras",
+          "Verduras y hortalizas",
           1,
-          "Registro insertado por defecto",
-          "assets/imagenes/bag_5.png",
+          "Datos para el regsitro de verduras y hortalizas",
+          "assets/imagenes/verduras.png",
           true,
-          "usuario_prueba",
-          "2021-03-24 16:56:00"
+          "ramiro.trujillo",
+          "2021-03-26 16:00:00"
+        ]);
+    await db.execute(
+        "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
+        [
+          "Frutas",
+          2,
+          "Datos para el registro de frutas",
+          "assets/imagenes/frutas.png",
+          true,
+          "ramiro.trujillo",
+          "2021-03-26 16:01:00"
+        ]);
+    await db.execute(
+        "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
+        [
+          "Refrescos y bebidas",
+          3,
+          "Datos para el registro de refrescos y bebidas",
+          "assets/imagenes/refrescos.png",
+          true,
+          "ramiro.trujillo",
+          "2021-03-26 16:02:00"
+        ]);
+    await db.execute(
+        "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
+        [
+          "Carnes y pollos",
+          4,
+          "Datos para el registro de carnes y pollos",
+          "assets/imagenes/carnes.png",
+          true,
+          "ramiro.trujillo",
+          "2021-03-26 16:03:00"
+        ]);
+    await db.execute(
+        "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
+        [
+          "Limpieza",
+          5,
+          "Datos para el registro de limpieza",
+          "assets/imagenes/limpieza.png",
+          true,
+          "ramiro.trujillo",
+          "2021-03-26 16:03:00"
+        ]);
+    await db.execute(
+        "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
+        [
+          "Otros y más...",
+          6,
+          "Datos para el registro de otros",
+          "assets/imagenes/otros_mas.png",
+          true,
+          "ramiro.trujillo",
+          "2021-03-26 16:04:00"
         ]);
   }
 
