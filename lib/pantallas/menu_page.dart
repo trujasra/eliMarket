@@ -1,5 +1,5 @@
 import 'package:eli_market/pantallas/lista_producto_page.dart';
-import 'package:flutter/gestures.dart';
+// import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -57,7 +57,6 @@ class MenuPage extends StatelessWidget {
       ),
       body: Container(
         margin: EdgeInsets.only(top: 15.0),
-        padding: EdgeInsets.only(top: 5.0),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -102,11 +101,10 @@ class MenuPage extends StatelessWidget {
   Widget _listaMenuCategoria(List<Categoria> listaCategoria) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: kDefaultPaddin,
-        ),
         child: GridView.builder(
             itemCount: listaCategoria.length,
+            padding: EdgeInsets.only(
+                top: 5.0, right: kDefaultPaddin, left: kDefaultPaddin),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: kDefaultPaddin,
