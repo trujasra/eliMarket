@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:eli_market/constantes.dart';
+import 'package:eli_market/widgets/creditos_componente.dart';
+import '../constantes.dart';
 
 class CreditosPage extends StatelessWidget {
   @override
@@ -22,21 +23,7 @@ class CreditosPage extends StatelessWidget {
           style: TextStyle(color: kTextoLigthColor),
         ),
       ),
-      body: Stack(
-        children: [
-          Container(
-            //color: kPrimaryColor, // comentar esto
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/imagenes/fondo_creditos.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: null,
-          ),
-          Text("Elizabeth")
-        ],
-      ),
+      body: CreditosComponente(),
     );
   }
 }

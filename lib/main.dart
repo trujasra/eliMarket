@@ -1,4 +1,5 @@
 import 'package:eli_market/constantes.dart';
+import 'package:eli_market/pantallas/registro_categoria.dart';
 import 'package:flutter/material.dart';
 
 import 'package:eli_market/pantallas/bienvenida_page.dart';

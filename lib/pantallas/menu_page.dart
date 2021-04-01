@@ -1,25 +1,42 @@
-import 'package:eli_market/pantallas/lista_producto_page.dart';
-// import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../constantes.dart';
-import 'package:eli_market/data/database_helper.dart';
-import 'package:eli_market/models/categoria.dart';
+import 'package:eli_market/pantallas/lista_categoria.dart';
+import 'package:eli_market/pantallas/registro_categoria.dart';
+import 'package:eli_market/pantallas/credito_menu_page.dart';
 
-class MenuPage extends StatelessWidget {
+import '../constantes.dart';
+
+class MenuPage extends StatefulWidget {
+  @override
+  _MenuPageState createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  List<Map<String, Object>> _paginas;
+  int _seleccionPaginaIndex = 0;
+
+  @override
+  void initState() {
+    _paginas = [
+      {'pagina': ListaCategoriaPage()},
+      {'pagina': ListaCategoriaPage()},
+      {'pagina': CreditoMenuPage()},
+      {'pagina': RegistroCategoriaPage()},
+    ];
+    super.initState();
+  }
+
+  void _seleccionPagina(int index) {
+    setState(() {
+      _seleccionPaginaIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // List<String> vlista = [
-    //   "Peras",
-    //   "Manzana",
-    //   "Higos",
-    //   "Duraznos",
-    //   "Mandarina"
-    // ];
-    Size tamanio = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         elevation: 0,
@@ -55,166 +72,63 @@ class MenuPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        margin: EdgeInsets.only(top: 15.0),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.0),
-                topRight: Radius.circular(30.0))),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
-          child: Column(
-            children: [
-              FutureBuilder(
-                  future: DataBaseHelper.db.obtieneCategoria(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Categoria>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else {
-                      return _listaMenuCategoria(snapshot.data);
-                    }
-                  }),
-            ],
-          ),
-        ),
-      ),
+      body: _paginas[_seleccionPaginaIndex]['pagina'],
       floatingActionButton: FloatingActionButton(
         foregroundColor: kPrimaryColor,
         backgroundColor: Colors.white,
         shape: CircleBorder(
           side: BorderSide(width: 5.0, color: kPrimaryColor),
         ),
-        onPressed: () {},
+        onPressed: () {
+          setState(() {});
+          // Navigator.pushNamed(context, '/RegistroCategoria');
+        },
         child: Icon(
           Icons.post_add_rounded,
           size: 30.0,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: botonesBar(context, tamanio),
+      bottomNavigationBar: _menuAbajo(context),
     );
   }
 
-  Widget _listaMenuCategoria(List<Categoria> listaCategoria) {
-    return Expanded(
-      child: Container(
-        child: GridView.builder(
-            itemCount: listaCategoria.length,
-            padding: EdgeInsets.only(
-                top: 5.0, right: kDefaultPaddin, left: kDefaultPaddin),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: kDefaultPaddin,
-                mainAxisSpacing: kDefaultPaddin,
-                childAspectRatio: 0.75),
-            itemBuilder: (BuildContext context, int index) {
-              Categoria oCategoria = listaCategoria[index];
-              return detalleMenu(context, oCategoria);
-            }),
-      ),
-    );
-  }
-
-  Widget detalleMenu(BuildContext context, Categoria pCategoria) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => ListaProductoPage(
-                    oCategoria: pCategoria,
-                  ))),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-              child: Container(
-            padding: EdgeInsets.all(kDefaultPaddin),
-            height: 180,
-            width: 160,
-            decoration: BoxDecoration(
-                color: Colors.pink[100],
-                borderRadius: BorderRadius.circular(16)),
-            child: Image.asset(pCategoria.imagen),
-          )),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: kDefaultPaddin),
-            child: Text(
-              pCategoria.descCategoria,
-              style: TextStyle(color: kPrimaryDarkColor),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget botonesBar(BuildContext context, Size pTamanio) {
+  Widget _menuAbajo(BuildContext context) {
     return Container(
       color: Colors.white,
       child: BottomAppBar(
         shape: CircularNotchedRectangle(),
-        notchMargin: 10.0,
+        notchMargin: 8.0,
         color: Colors.transparent,
         elevation: 10.0,
         clipBehavior: Clip.antiAlias,
         child: Container(
-          height: 50.0,
+          height: kBottomNavigationBarHeight + 10,
           decoration: BoxDecoration(
+              color: kPrimaryColor,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(25.0),
-                  topRight: Radius.circular(25.0)),
-              color: kPrimaryColor),
+                  topRight: Radius.circular(25.0))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                height: 50.0,
-                width: pTamanio.width / 2 - 30,
+                width: MediaQuery.of(context).size.width / 2 - 30,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.home_rounded,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        // print("Hola");
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.search_sharp,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {},
-                    ),
+                    _disenioMenuBoton(0, "home.svg", "Inicio"),
+                    _disenioMenuBoton(1, "loupe.svg", "Buscar"),
                   ],
                 ),
               ),
               Container(
-                height: 50.0,
-                width: pTamanio.width / 2 - 30,
+                width: MediaQuery.of(context).size.width / 2 - 30,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {},
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.exit_to_app,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {},
-                    ),
+                    _disenioMenuBoton(2, "user.svg", "Creditos"),
+                    _disenioMenuBoton(3, "edit.svg", "Salir"),
                   ],
                 ),
               ),
@@ -222,6 +136,35 @@ class MenuPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _disenioMenuBoton(int index, String pIcono, String pTextoIcono) {
+    return Column(
+      children: [
+        IconButton(
+            icon: SvgPicture.asset(
+              "assets/icons/" + pIcono,
+              color: _seleccionPaginaIndex == index
+                  ? kIconLigthColor
+                  : kTextoLigthColor,
+              width: 24.0,
+            ),
+            onPressed: () {
+              setState(() {
+                _seleccionPaginaIndex = index;
+                _seleccionPagina(_seleccionPaginaIndex);
+              });
+            }),
+        Text(
+          pTextoIcono,
+          style: TextStyle(
+            color: _seleccionPaginaIndex == index
+                ? kIconLigthColor
+                : kTextoLigthColor,
+          ),
+        ),
+      ],
     );
   }
 }
