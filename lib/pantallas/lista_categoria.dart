@@ -75,19 +75,20 @@ class ListaCategoriaPage extends StatelessWidget {
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(vertical: kDefaultPaddin / 4),
-              height: 180,
+              // height: 100,
               width: 160,
               decoration: BoxDecoration(
-                  color: Color.fromRGBO(255, 233, 219, 1),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.pink[200].withOpacity(0.4),
-                      spreadRadius: 1,
-                      blurRadius: 2,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ]),
+                color: Color.fromRGBO(255, 233, 219, 1),
+                borderRadius: BorderRadius.circular(16),
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.pink[200].withOpacity(0.4),
+                //     spreadRadius: 1,
+                //     blurRadius: 2,
+                //     offset: Offset(0, 3), // changes position of shadow
+                //   ),
+                // ]
+              ),
               child: Column(
                 children: [
                   Container(

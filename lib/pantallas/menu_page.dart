@@ -87,6 +87,8 @@ class _MenuPageState extends State<MenuPage> {
         onPressed: () {
           setState(() {});
           // Navigator.pushNamed(context, '/RegistroCategoria');
+          _seleccionPaginaIndex = 3;
+          _seleccionPagina(_seleccionPaginaIndex);
         },
         child: Icon(
           Icons.post_add_rounded,
