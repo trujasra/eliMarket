@@ -70,11 +70,11 @@ class ListaProductoPage extends StatelessWidget {
 
   Widget itemProducto(Categoria oCategoria) {
     return Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(8.0),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
         decoration: BoxDecoration(
-          color: Colors.pink[100],
+          color: Color.fromRGBO(255, 233, 219, 1),
           borderRadius: BorderRadius.circular(18.0),
         ),
         child: Column(
@@ -84,7 +84,7 @@ class ListaProductoPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleAvatar(
-                  backgroundColor: Color.fromRGBO(255, 233, 219, 1),
+                  backgroundColor: Color.fromRGBO(245, 223, 239, 1),
                   backgroundImage: AssetImage(oCategoria.imagen),
                   radius: 36,
                 ),
