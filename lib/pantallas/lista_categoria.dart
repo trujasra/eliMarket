@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:eli_market/data/database_helper.dart';
 import 'package:eli_market/models/categoria.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'lista_producto_page.dart';
 
 import '../constantes.dart';
@@ -72,22 +73,56 @@ class ListaCategoriaPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-              child: Container(
-            padding: EdgeInsets.all(kDefaultPaddin),
-            height: 180,
-            width: 160,
-            decoration: BoxDecoration(
-                color: Colors.pink[100],
-                borderRadius: BorderRadius.circular(16)),
-            child: Image.asset(pCategoria.imagen),
-          )),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: kDefaultPaddin),
-            child: Text(
-              pCategoria.descCategoria,
-              style: TextStyle(color: kPrimaryDarkColor),
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: kDefaultPaddin / 4),
+              height: 180,
+              width: 160,
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(255, 233, 219, 1),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.pink[200].withOpacity(0.4),
+                      spreadRadius: 1,
+                      blurRadius: 2,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ]),
+              child: Column(
+                children: [
+                  Container(
+                      height: 140,
+                      decoration: BoxDecoration(
+                        color: pCategoria.idCategoria % 2 == 0
+                            ? kMenuColor1
+                            : kMenuColor2,
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(27.0),
+                            bottomLeft: Radius.circular(27.0)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Image.asset(pCategoria.imagen),
+                      )),
+                  Padding(
+                    padding: EdgeInsets.only(top: 5.0),
+                    child: Text(pCategoria.descCategoria,
+                        style: GoogleFonts.revalia(
+                          color: kPrimaryDarkColor,
+                        ),
+                        textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
             ),
-          )
+          ),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(vertical: kDefaultPaddin),
+          //   child: Text(
+          //     pCategoria.descCategoria,
+          //     style: TextStyle(color: kPrimaryDarkColor),
+          //   ),
+          // )
         ],
       ),
     );

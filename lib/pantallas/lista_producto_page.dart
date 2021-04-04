@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../constantes.dart';
 import 'package:eli_market/data/database_helper.dart';
@@ -26,7 +27,10 @@ class ListaProductoPage extends StatelessWidget {
               icon: SvgPicture.asset("assets/icons/search.svg"),
               onPressed: () {}),
         ],
-        title: Text(oCategoria.descCategoria),
+        title: Text(oCategoria.descCategoria,
+            style: GoogleFonts.berkshireSwash(
+              color: kTextoLigthColor,
+            )),
       ),
       body: FutureBuilder(
         future: DataBaseHelper.db.obtieneCategoria(),

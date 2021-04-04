@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+// import 'dart:io';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:eli_market/pantallas/lista_categoria.dart';
 import 'package:eli_market/pantallas/registro_categoria.dart';
@@ -67,8 +70,10 @@ class _MenuPageState extends State<MenuPage> {
         // ],
         title: Text(
           "Categorias",
-          style:
-              TextStyle(color: kTextoLigthColor, fontWeight: FontWeight.bold),
+          style: GoogleFonts.berkshireSwash(
+            color: kTextoLigthColor,
+          ),
+          // TextStyle(color: kTextoLigthColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -128,7 +133,7 @@ class _MenuPageState extends State<MenuPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _disenioMenuBoton(2, "user.svg", "Creditos"),
-                    _disenioMenuBoton(3, "edit.svg", "Salir"),
+                    _disenioMenuBoton(3, "exit.svg", "Salir"),
                   ],
                 ),
               ),
@@ -151,18 +156,29 @@ class _MenuPageState extends State<MenuPage> {
               width: 24.0,
             ),
             onPressed: () {
-              setState(() {
-                _seleccionPaginaIndex = index;
-                _seleccionPagina(_seleccionPaginaIndex);
-              });
+              if (index == 3) {
+                // exit(0);
+                // SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                SystemNavigator.pop();
+              } else {
+                setState(() {
+                  _seleccionPaginaIndex = index;
+                  _seleccionPagina(_seleccionPaginaIndex);
+                });
+              }
             }),
         Text(
           pTextoIcono,
-          style: TextStyle(
-            color: _seleccionPaginaIndex == index
-                ? kIconLigthColor
-                : kTextoLigthColor,
-          ),
+          style: GoogleFonts.revalia(
+              fontSize: 11.0,
+              color: _seleccionPaginaIndex == index
+                  ? kIconLigthColor
+                  : kTextoLigthColor),
+          // TextStyle(
+          //   color: _seleccionPaginaIndex == index
+          //       ? kIconLigthColor
+          //       : kTextoLigthColor,
+          // ),
         ),
       ],
     );

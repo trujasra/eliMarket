@@ -63,7 +63,7 @@ class DataBaseHelper {
     String path = join(documentoDirectorio.path, DB_NAME);
 
     // Delete the database //TODO: esto luego borrar
-    await deleteDatabase(path);
+    //await deleteDatabase(path);
 
     var db = await openDatabase(path, version: 1, onCreate: _onCreate);
     return db;
