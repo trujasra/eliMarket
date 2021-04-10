@@ -171,7 +171,7 @@ class _MenuPageState extends State<MenuPage> {
             }),
         Text(
           pTextoIcono,
-          style: GoogleFonts.revalia(
+          style: GoogleFonts.montserratAlternates(
               fontSize: 11.0,
               color: _seleccionPaginaIndex == index
                   ? kIconLigthColor
