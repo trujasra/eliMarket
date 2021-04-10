@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -159,9 +158,11 @@ class ListaProductoPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _botonDetalle(Icons.delete, "Eliminar"),
-                _botonDetalle(Icons.edit, "Modificar"),
-                _botonDetalle(Icons.search, "Ver detalle"),
+                _botonDetalle(Icons.delete, "Eliminar", kPrimaryDarkColor),
+                _botonDetalle(
+                    Icons.edit, "Modificar", Color.fromRGBO(47, 161, 7, 1)),
+                _botonDetalle(Icons.search, "Ver detalle",
+                    Color.fromRGBO(149, 35, 192, 1)),
               ],
             )
           ],
@@ -170,24 +171,24 @@ class ListaProductoPage extends StatelessWidget {
     );
   }
 
-  _botonDetalle(IconData icono, String titulo) {
+  _botonDetalle(IconData icono, String titulo, Color pColor) {
     return FlatButton.icon(
         height: 18.0,
         padding: EdgeInsets.zero,
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        color: kMenuColor2,
+        color: pColor.withOpacity(0.2),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0),
-            side: BorderSide(color: kPrimaryDarkColor)),
+            side: BorderSide(color: pColor)),
         onPressed: () {},
         icon: Icon(
           icono,
           size: 14.0,
-          color: kPrimaryDarkColor,
+          color: pColor,
         ),
         label: Text(
           titulo,
-          style: TextStyle(fontSize: 11.0, color: kPrimaryDarkColor),
+          style: TextStyle(fontSize: 11.0, color: pColor),
         ));
   }
 }
