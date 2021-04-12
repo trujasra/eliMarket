@@ -11,6 +11,7 @@ import '../constantes.dart';
 
 class ListaCategoriaPage extends StatelessWidget {
   final Random random = new Random();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +87,7 @@ class ListaCategoriaPage extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: kDefaultPaddin / 2,
                 mainAxisSpacing: kDefaultPaddin / 2,
-                childAspectRatio: 0.95),
+                childAspectRatio: 0.88),
             itemBuilder: (BuildContext context, int index) {
               Categoria oCategoria = listaCategoria[index];
               return detalleMenuN(context, oCategoria);

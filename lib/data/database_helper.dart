@@ -1,8 +1,10 @@
 import 'dart:io' as io;
 import 'dart:async';
+import 'package:eli_market/models/par_tipo_categoria.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:intl/intl.dart';
 
 import 'package:eli_market/models/categoria.dart';
 
@@ -71,13 +73,13 @@ class DataBaseHelper {
 
   FutureOr<void> _onCreate(Database db, int version) async {
     String sqlParTipoCategoria =
-        "CREATE TABLE $TABLA_TIPO_CATEGORIA ($ID_TIPO_CATEGORIA INTEGER PRIMARY KEY, $TIPO_CATEGORIA TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
+        "CREATE TABLE $TABLA_TIPO_CATEGORIA ($ID_TIPO_CATEGORIA INTEGER PRIMARY KEY, $TIPO_CATEGORIA TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO TEXT, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION TEXT)";
     String sqlCategoria =
-        "CREATE TABLE $TABLA_CATEGORIA ($ID_CATEGORIA INTEGER PRIMARY KEY AUTOINCREMENT, $DESC_CATEGORIA TEXT, $PAR_TIPO_CATEGORIA INTEGER, $OBSERVACION TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
+        "CREATE TABLE $TABLA_CATEGORIA ($ID_CATEGORIA INTEGER PRIMARY KEY AUTOINCREMENT, $DESC_CATEGORIA TEXT, $PAR_TIPO_CATEGORIA INTEGER, $OBSERVACION TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO TEXT, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION TEXT)";
     String sqlProducto =
-        "CREATE TABLE $TABLA_PRODUCTO ($ID_PRODUCTO INTEGER PRIMARY KEY AUTOINCREMENT, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
+        "CREATE TABLE $TABLA_PRODUCTO ($ID_PRODUCTO INTEGER PRIMARY KEY AUTOINCREMENT, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO TEXT, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION TEXT)";
     String sqlProductoBitacora =
-        "CREATE TABLE $TABLA_PRODUCTO_BITACORA ($ID_PRODUCTO_BITACORA INTEGER PRIMARY KEY AUTOINCREMENT, $ID_PRODUCTO INTEGER, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO DATETIME, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION DATETIME)";
+        "CREATE TABLE $TABLA_PRODUCTO_BITACORA ($ID_PRODUCTO_BITACORA INTEGER PRIMARY KEY AUTOINCREMENT, $ID_PRODUCTO INTEGER, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO TEXT, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION TEXT)";
 
     // Crea las tablas de la BD
     await db.execute(sqlParTipoCategoria);
@@ -85,6 +87,7 @@ class DataBaseHelper {
     await db.execute(sqlProducto);
     await db.execute(sqlProductoBitacora);
 
+    //String vDato = DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now());
     // Insertar por defecto los tipo de categoria
     await db.execute(
         "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA, $TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
@@ -93,11 +96,17 @@ class DataBaseHelper {
           "Verduras y hortalizas",
           true,
           "ramiro.trujillo",
-          "2021-03-26 15:00:00"
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
         ]);
     await db.execute(
         "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA,$TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
-        [2, "Frutas", true, "ramiro.trujillo", "2021-03-26 15:01:00"]);
+        [
+          2,
+          "Frutas",
+          true,
+          "ramiro.trujillo",
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
+        ]);
     await db.execute(
         "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA,$TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
         [
@@ -105,17 +114,44 @@ class DataBaseHelper {
           "Refrescos y bebidas",
           true,
           "ramiro.trujillo",
-          "2021-03-26 15:02:00"
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
         ]);
     await db.execute(
         "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA,$TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
-        [4, "Carnes y pollos", true, "ramiro.trujillo", "2021-03-26 15:03:00"]);
+        [
+          4,
+          "Carnes y pollos",
+          true,
+          "ramiro.trujillo",
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
+        ]);
     await db.execute(
         "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA,$TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
-        [5, "Limpieza", true, "ramiro.trujillo", "2021-03-26 15:04:00"]);
+        [
+          5,
+          "Limpieza",
+          true,
+          "ramiro.trujillo",
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
+        ]);
     await db.execute(
         "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA,$TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
-        [6, "Otros", true, "ramiro.trujillo", "2021-03-26 15:05:00"]);
+        [
+          6,
+          "Abarrotes y aceites",
+          true,
+          "ramiro.trujillo",
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
+        ]);
+    await db.execute(
+        "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA,$TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
+        [
+          7,
+          "Otros",
+          true,
+          "ramiro.trujillo",
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
+        ]);
 
     // Crea por defecto registros para la tabla categoria
     await db.execute(
@@ -127,7 +163,7 @@ class DataBaseHelper {
           "assets/imagenes/verduras.png",
           true,
           "ramiro.trujillo",
-          "2021-03-26 16:00:00"
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
         ]);
     await db.execute(
         "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
@@ -138,7 +174,7 @@ class DataBaseHelper {
           "assets/imagenes/frutas.png",
           true,
           "ramiro.trujillo",
-          "2021-03-26 16:01:00"
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
         ]);
     await db.execute(
         "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
@@ -149,7 +185,7 @@ class DataBaseHelper {
           "assets/imagenes/refrescos.png",
           true,
           "ramiro.trujillo",
-          "2021-03-26 16:02:00"
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
         ]);
     await db.execute(
         "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
@@ -160,7 +196,7 @@ class DataBaseHelper {
           "assets/imagenes/carnes.png",
           true,
           "ramiro.trujillo",
-          "2021-03-26 16:03:00"
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
         ]);
     await db.execute(
         "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
@@ -171,25 +207,39 @@ class DataBaseHelper {
           "assets/imagenes/limpieza.png",
           true,
           "ramiro.trujillo",
-          "2021-03-26 16:03:00"
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
+        ]);
+    await db.execute(
+        "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
+        [
+          "Abarrotes y aceites",
+          6,
+          "Datos para el registro de abarrotes y aceites",
+          "assets/imagenes/abarrotes.png",
+          true,
+          "ramiro.trujillo",
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
         ]);
     await db.execute(
         "INSERT INTO $TABLA_CATEGORIA($DESC_CATEGORIA,$PAR_TIPO_CATEGORIA,$OBSERVACION,$IMAGEN,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?,?,?)",
         [
           "Otros y más...",
-          6,
+          7,
           "Datos para el registro de otros",
           "assets/imagenes/otros_mas.png",
           true,
           "ramiro.trujillo",
-          "2021-03-26 16:04:00"
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())
         ]);
   }
 
+  // CATEGORIA
+  // Operacion lista : Obtiene todos los registros de la BD
   Future<List<Categoria>> obtieneCategoria() async {
     var dbClient = await database;
     // List<Map> maps = await dbClient.query(TABLA_CATEGORIA, columns: [ID, NAME, LAST_NAME]);
-    List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLA_CATEGORIA");
+    List<Map> maps = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_CATEGORIA WHERE $ESTADO_REGISTRO = 1 ORDER BY $DESC_CATEGORIA ASC");
     List<Categoria> listaCategoria = [];
     if (maps.length > 0) {
       for (int i = 0; i < maps.length; i++) {
@@ -197,6 +247,99 @@ class DataBaseHelper {
       }
     }
     return listaCategoria;
+  }
+
+  // Operacion lista : Obtiene el registro por el identificador de Categoria de la BD
+  Future<Categoria> obtieneCategoriaPorId(int idCategoria) async {
+    var dbClient = await database;
+    List<Map> map = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_CATEGORIA WHERE $ESTADO_REGISTRO = 1 AND $ID_CATEGORIA = $idCategoria");
+    Categoria listaCategoria = Categoria();
+    if (map.length > 0) {
+      listaCategoria = Categoria.fromMap(map[0]);
+    }
+    return listaCategoria;
+  }
+
+  // Operacion lista : Obtiene el registro por el identificador de Categoria de la BD
+  Future<Categoria> registraCategoria(Categoria categoria) async {
+    var dbClient = await database;
+    categoria.idCategoria =
+        await dbClient.insert(TABLA_CATEGORIA, categoria.toMap());
+    return categoria;
+  }
+
+  // Operacion actualizacion : Actualiza el objeto categoria a la BD
+  Future<int> actualizaCategoria(Categoria categoria) async {
+    var dbClient = await database;
+    var resultado = await dbClient.update(TABLA_CATEGORIA, categoria.toMap(),
+        where: '$ID_CATEGORIA = ?', whereArgs: [categoria.idCategoria]);
+    return resultado;
+  }
+
+  // Operacion eliminacion : Eliminacion logica Estado_regstro =0 objeto Categoria a la BD
+  Future<int> eliminaCategoria(int idCategoria) async {
+    var dbClient = await database;
+    String vSql =
+        "UPDATE $ESTADO_REGISTRO = 0 FROM $TABLA_CATEGORIA WHERE $ID_CATEGORIA = $idCategoria";
+    var resultado = await dbClient.rawUpdate(vSql);
+    return resultado;
+  }
+
+// TIPO CATEGORIA
+  // Operacion lista : Obtiene todos los registros de la BD
+  Future<List<ParTipoCategoria>> obtieneTipoCategoria() async {
+    var dbClient = await database;
+    List<Map> maps = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_TIPO_CATEGORIA WHERE $ESTADO_REGISTRO = 1 ORDER BY $TIPO_CATEGORIA ASC");
+    List<ParTipoCategoria> listaTipoCategoria = [];
+    if (maps.length > 0) {
+      for (int i = 0; i < maps.length; i++) {
+        listaTipoCategoria.add(ParTipoCategoria.fromMap(maps[i]));
+      }
+    }
+    return listaTipoCategoria;
+  }
+
+  // Operacion lista : Obtiene el registro por el identificador de Tipo Categoria de la BD
+  Future<ParTipoCategoria> obtieneTipoCategoriaPorId(
+      int idTipoCategoria) async {
+    var dbClient = await database;
+    List<Map> map = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_TIPO_CATEGORIA WHERE $ESTADO_REGISTRO = 1 AND $ID_TIPO_CATEGORIA = $idTipoCategoria");
+    ParTipoCategoria listaTipoCategoria = ParTipoCategoria();
+    if (map.length > 0) {
+      listaTipoCategoria = ParTipoCategoria.fromMap(map[0]);
+    }
+    return listaTipoCategoria;
+  }
+
+  // Operacion lista : Obtiene el registro por el identificador de Tipo Categoria de la BD
+  Future<ParTipoCategoria> registraTipoCategoria(
+      ParTipoCategoria tipoCategoria) async {
+    var dbClient = await database;
+    tipoCategoria.idTipoCategoria =
+        await dbClient.insert(TABLA_TIPO_CATEGORIA, tipoCategoria.toMap());
+    return tipoCategoria;
+  }
+
+  // Operacion actualizacion : Actualiza el objeto Tipo Categoria a la BD
+  Future<int> actualizaTipoCategoria(ParTipoCategoria tipoCategoria) async {
+    var dbClient = await database;
+    var resultado = await dbClient.update(
+        TABLA_TIPO_CATEGORIA, tipoCategoria.toMap(),
+        where: '$ID_TIPO_CATEGORIA = ?',
+        whereArgs: [tipoCategoria.idTipoCategoria]);
+    return resultado;
+  }
+
+  // Operacion eliminacion : Eliminacion logica Estado_registro =0 objeto Tipo Categoria a la BD
+  Future<int> eliminaTipoCategoria(int idTipoCategoria) async {
+    var dbClient = await database;
+    String vSql =
+        "UPDATE $ESTADO_REGISTRO = 0 FROM $TABLA_TIPO_CATEGORIA WHERE $ID_TIPO_CATEGORIA = $idTipoCategoria";
+    var resultado = await dbClient.rawUpdate(vSql);
+    return resultado;
   }
 
   // Future<Persona> registraPersona(Persona persona) async {

@@ -9,9 +9,9 @@ class Producto {
 
   bool estadoRegistro;
   String usuarioRegistro;
-  DateTime fechaRegistro;
+  String fechaRegistro;
   String usuarioModificacion;
-  DateTime fechaModificacion;
+  String fechaModificacion;
 
   Producto(
       {this.idProducto,

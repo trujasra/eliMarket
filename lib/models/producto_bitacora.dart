@@ -10,9 +10,9 @@ class ProductoBitacora {
 
   bool estadoRegistro;
   String usuarioRegistro;
-  DateTime fechaRegistro;
+  String fechaRegistro;
   String usuarioModificacion;
-  DateTime fechaModificacion;
+  String fechaModificacion;
 
   ProductoBitacora(
       {this.idProductoBitacora,

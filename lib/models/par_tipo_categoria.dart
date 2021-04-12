@@ -4,9 +4,9 @@ class ParTipoCategoria {
 
   bool estadoRegistro;
   String usuarioRegistro;
-  DateTime fechaRegistro;
+  String fechaRegistro;
   String usuarioModificacion;
-  DateTime fechaModificacion;
+  String fechaModificacion;
 
   ParTipoCategoria(
       {this.idTipoCategoria,

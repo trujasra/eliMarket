@@ -7,9 +7,9 @@ class Categoria {
 
   bool estadoRegistro;
   String usuarioRegistro;
-  DateTime fechaRegistro;
+  String fechaRegistro;
   String usuarioModificacion;
-  DateTime fechaModificacion;
+  String fechaModificacion;
 
   Categoria(
       {this.idCategoria,
@@ -46,7 +46,8 @@ class Categoria {
     imagen = map["imagen"];
     estadoRegistro = map["estado_registro"] == 0 ? false : true;
     usuarioRegistro = map["usuario_registro"];
-    fechaRegistro = DateTime.parse(map["fecha_registro"]);
+    // fechaRegistro = DateTime.parse(map["fecha_registro"]);
+    fechaRegistro = map["fecha_registro"];
     usuarioModificacion = map["usuario_modificacion"];
     fechaModificacion = map["fecha_modificacion"];
   }
