@@ -264,6 +264,12 @@ class DataBaseHelper {
   // Operacion lista : Obtiene el registro por el identificador de Categoria de la BD
   Future<Categoria> registraCategoria(Categoria categoria) async {
     var dbClient = await database;
+
+    categoria.estadoRegistro = true;
+    categoria.usuarioRegistro = "ramiro.trujillo";
+    categoria.fechaRegistro =
+        DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now());
+
     categoria.idCategoria =
         await dbClient.insert(TABLA_CATEGORIA, categoria.toMap());
     return categoria;
