@@ -41,7 +41,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = TextStyle(color: kPrimaryColor);
+    TextStyle textStyle = TextStyle(color: Colors.green);
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -51,37 +51,52 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
             child: TextField(
               maxLength: 40,
               controller: descripcionController,
-              style: textStyle,
-
-              // onChanged: (value) {
-              //   categoria.descCategoria = descripcionController.text;
-              // },
+              // style: textStyle,
               decoration: InputDecoration(
-                  labelText: 'Descripción',
-                  hintText: 'Ingrese la categoria',
-                  labelStyle: textStyle,
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: new BorderSide(color: kPrimaryColor),
-                      borderRadius: BorderRadius.circular(6.0))),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: new BorderSide(
+                      color: kPrimaryDarkColor,
+                    ),
+                    borderRadius: BorderRadius.circular(6.0)),
+                labelText: 'Descripción',
+                hintText: 'Ingrese la categoria',
+                labelStyle: textStyle,
+                focusedBorder: OutlineInputBorder(
+                    borderSide: new BorderSide(
+                      color: kPrimaryDarkColor,
+                    ),
+                    borderRadius: BorderRadius.circular(6.0)),
+              ),
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0),
-            child: DropdownButton(
-              isExpanded: true,
-              style: textStyle,
-              hint: Text(
-                "Tipo categoria",
-                style: TextStyle(color: kPrimaryColor, fontSize: 16.0),
+            child: Container(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+                  border: Border.all(
+                    color: kPrimaryDarkColor,
+                    width: 1,
+                  ),
+                  color: Colors.white),
+              child: DropdownButton(
+                isExpanded: true,
+                itemHeight: 50.0,
+                style: textStyle,
+                hint: Text(
+                  "Tipo categoria",
+                  style: TextStyle(color: kPrimaryDarkColor, fontSize: 16.0),
+                ),
+                value: vIdTipoCategoria,
+                onChanged: (valor) {
+                  // print(valor);
+                  setState(() {
+                    vIdTipoCategoria = valor;
+                  });
+                },
+                items: lista,
               ),
-              value: vIdTipoCategoria,
-              onChanged: (valor) {
-                // print(valor);
-                setState(() {
-                  vIdTipoCategoria = valor;
-                });
-              },
-              items: lista,
             ),
           ),
           Padding(
@@ -99,7 +114,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                   hintText: 'Ingrese la observación',
                   labelStyle: textStyle,
                   focusedBorder: OutlineInputBorder(
-                      borderSide: new BorderSide(color: kPrimaryColor),
+                      borderSide: new BorderSide(color: kPrimaryDarkColor),
                       borderRadius: BorderRadius.circular(6.0))),
             ),
           ),
