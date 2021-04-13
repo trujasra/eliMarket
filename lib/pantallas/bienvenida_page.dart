@@ -37,7 +37,7 @@ class BienvenidaPage extends StatelessWidget {
                           child: Text(cBotonIngreso),
                           style: ElevatedButton.styleFrom(
                               elevation: 5.0,
-                              primary: Colors.purpleAccent,
+                              primary: kAcentColor,
                               padding: EdgeInsets.symmetric(horizontal: 30.0),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0))),
@@ -52,7 +52,7 @@ class BienvenidaPage extends StatelessWidget {
                           child: Text(cBotonCreditos),
                           style: ElevatedButton.styleFrom(
                               elevation: 5.0,
-                              primary: Colors.purpleAccent,
+                              primary: kAcentColor,
                               padding: EdgeInsets.symmetric(horizontal: 30.0),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0))),

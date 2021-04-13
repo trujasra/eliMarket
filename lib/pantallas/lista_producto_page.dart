@@ -20,18 +20,18 @@ class ListaProductoPage extends StatelessWidget {
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: SvgPicture.asset("assets/icons/back.svg",
-              color: kIconPrimaryColor),
+              color: kTextoLigthColor),
         ),
         actions: [
           IconButton(
               icon: SvgPicture.asset(
                 "assets/icons/search.svg",
-                color: kIconPrimaryColor,
+                color: kTextoLigthColor,
               ),
               onPressed: () {}),
           IconButton(
               icon: SvgPicture.asset("assets/icons/shopping-cart-1.svg",
-                  color: kIconPrimaryColor),
+                  color: kTextoLigthColor),
               onPressed: () {}),
         ],
         title: Text(oCategoria.descCategoria,
@@ -83,7 +83,7 @@ class ListaProductoPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleAvatar(
-                  backgroundColor: Color.fromRGBO(245, 223, 239, 1),
+                  backgroundColor: Colors.white,
                   backgroundImage: AssetImage(oCategoria.imagen),
                   radius: 36,
                 ),
@@ -100,22 +100,20 @@ class ListaProductoPage extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: kPrimaryColor,
+                            color: kTextoDarkColor,
                             height: 1.5),
                       ),
                       Text(
                         oCategoria.observacion,
                         // overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: 14,
-                            color: kPrimaryDarkColor,
-                            height: 1.5),
+                            fontSize: 14, color: kTextoColor, height: 1.5),
                       ),
                       Text(
                         "Lugar : ${oCategoria.observacion}",
                         // overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: 12, color: Colors.pink[500], height: 1.5),
+                            fontSize: 13, color: kIconoInactivo, height: 1.5),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -133,8 +131,8 @@ class ListaProductoPage extends StatelessWidget {
                             "${oCategoria.parTipoCategoria} Bs.",
                             // overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                                fontSize: 15,
-                                color: kPrimaryColor,
+                                fontSize: 20,
+                                color: kTextoDarkColor,
                                 fontWeight: FontWeight.bold),
                           ),
                         ],

@@ -13,7 +13,7 @@ class CreditosPage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: SvgPicture.asset("assets/icons/back.svg",
-              color: kIconPrimaryColor),
+              color: kTextoLigthColor),
           onPressed: () {
             Navigator.pop(context);
           },

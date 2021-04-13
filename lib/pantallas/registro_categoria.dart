@@ -41,7 +41,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = TextStyle(color: Colors.green);
+    TextStyle textStyle = TextStyle(color: kTextoColor);
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -138,11 +138,12 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
               },
               child: Text("REGISTRAR"),
               style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 15.0),
                   elevation: 5.0,
-                  primary: kPrimaryDarkColor,
+                  primary: kAcentColor,
                   // padding: EdgeInsets.symmetric(horizontal: 30.0),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0))),
+                      borderRadius: BorderRadius.circular(10.0))),
             ),
           )
         ],

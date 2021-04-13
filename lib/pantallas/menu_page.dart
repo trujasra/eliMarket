@@ -45,7 +45,7 @@ class _MenuPageState extends State<MenuPage> {
         elevation: 0,
         leading: IconButton(
           icon: SvgPicture.asset("assets/icons/back.svg",
-              color: kIconPrimaryColor),
+              color: kTextoLigthColor),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -153,8 +153,8 @@ class _MenuPageState extends State<MenuPage> {
             icon: SvgPicture.asset(
               "assets/icons/" + pIcono,
               color: _seleccionPaginaIndex == index
-                  ? kIconLigthColor
-                  : kTextoLigthColor,
+                  ? kTextoLigthColor
+                  : kIconoInactivo,
               width: 24.0,
             ),
             onPressed: () {
@@ -174,8 +174,8 @@ class _MenuPageState extends State<MenuPage> {
           style: GoogleFonts.montserratAlternates(
               fontSize: 11.0,
               color: _seleccionPaginaIndex == index
-                  ? kIconLigthColor
-                  : kTextoLigthColor),
+                  ? kTextoLigthColor
+                  : kIconoInactivo),
           // TextStyle(
           //   color: _seleccionPaginaIndex == index
           //       ? kIconLigthColor
