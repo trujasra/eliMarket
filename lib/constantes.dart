@@ -29,6 +29,6 @@ const Color kTextoDarkColor = Color.fromRGBO(42, 34, 147, 1);
 const Color kAcentColor = Color.fromRGBO(211, 0, 235, 1);
 const Color kIconoInactivo = Color.fromRGBO(165, 77, 188, 1); //149, 77, 168
 
-const Color kMenuColor2 = Color.fromRGBO(255, 205, 210, 1);
-const Color kMenuColor1 = Color.fromRGBO(248, 187, 208, 1);
+// const Color kMenuColor2 = Color.fromRGBO(255, 205, 210, 1);
+// const Color kMenuColor1 = Color.fromRGBO(248, 187, 208, 1);
 const kDefaultPaddin = 20.0;
