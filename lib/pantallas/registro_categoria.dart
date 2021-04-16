@@ -16,8 +16,10 @@ class RegistroCategoriaPage extends StatefulWidget {
 }
 
 class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
+  TextStyle textStyle = TextStyle(color: kTextoDarkColor);
   TextEditingController descripcionController = TextEditingController();
   TextEditingController observacionController = TextEditingController();
+  TextEditingController descTipoCategoriaController = TextEditingController();
   String vIdTipoCategoria;
   //TextEditingController descriptionController = TextEditingController();
 
@@ -44,7 +46,6 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = TextStyle(color: kTextoDarkColor);
     return Scaffold(
       backgroundColor: Colors.white, //kPrimaryColor
       body: Column(
@@ -53,7 +54,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
         children: [
           Container(
             decoration: BoxDecoration(
-                color: kPrimaryColor,
+                color: kIconoInactivo,
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20.0),
                     bottomRight: Radius.circular(20.0))),
@@ -71,9 +72,9 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                         color: kPrimaryLigthColor, fontSize: 14.0), //
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 9.0, left: 20.0, right: 20.0),
+                    padding: EdgeInsets.only(top: 9.0, left: 18.0, right: 18.0),
                     child: Text(
-                      "* Si no existe el tipo de categoria, debe de hacer click en (+ TIPO CAT) para agregar uno nuevo.",
+                      "* Si no existe en la lista el tipo categoria, debe de hacer click en (+ TIPO CAT) para agregar uno nuevo.",
                       style: GoogleFonts.montserratAlternates(
                           color: kTextoLigthColor, fontSize: 12.0),
                     ),
@@ -145,26 +146,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20.0),
-                    child: ElevatedButton.icon(
-                      icon: SvgPicture.asset(
-                        "assets/icons/shopping-basket.svg",
-                        color: kTextoLigthColor,
-                        height: 25.0,
-                      ),
-                      onPressed: () {},
-                      label: Text("+ TIPO CAT."),
-                      style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 15.0),
-                          elevation: 5.0,
-                          primary: kAcentColor,
-                          // padding: EdgeInsets.symmetric(horizontal: 30.0),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0))),
-                    ),
-                  ),
+                  registrarNuevoTipoCategoria(context),
                 ],
               ),
               Padding(
@@ -189,34 +171,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                   ),
                 ),
               ),
-              Container(
-                margin: new EdgeInsets.only(top: 20.0),
-                width: MediaQuery.of(context).size.width * 0.90,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Categoria categoria = new Categoria();
-                    categoria.descCategoria = descripcionController.text;
-                    categoria.parTipoCategoria = int.parse(vIdTipoCategoria);
-                    categoria.observacion = observacionController.text;
-                    categoria.imagen = "assets/imagenes/abarrotes.png";
-
-                    // Envia para registrar la informacion.
-                    DataBaseHelper.db.registraCategoria(categoria);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => MenuPage()));
-                  },
-                  child: Text("REGISTRAR"),
-                  style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 15.0),
-                      elevation: 5.0,
-                      primary: kAcentColor,
-                      // padding: EdgeInsets.symmetric(horizontal: 30.0),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0))),
-                ),
-              )
+              registrarNuevaCategoria(context)
             ],
           ),
         ],
@@ -229,6 +184,149 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
     return DropdownMenuItem<String>(
       value: tipoCategoria.idTipoCategoria.toString(),
       child: Text(tipoCategoria.tipoCategoria),
+    );
+  }
+
+  Widget registrarNuevaCategoria(BuildContext context) {
+    return Container(
+      margin: new EdgeInsets.only(top: 20.0),
+      width: MediaQuery.of(context).size.width * 0.90,
+      child: ElevatedButton(
+        onPressed: () {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Información"),
+                  content: Text("Desea registrar la nueva categoria?"),
+                  actions: [
+                    OutlinedButton(
+                      onPressed: () {
+                        // Categoria categoria = new Categoria();
+                        // categoria.descCategoria = descripcionController.text;
+                        // categoria.parTipoCategoria = int.parse(vIdTipoCategoria);
+                        // categoria.observacion = observacionController.text;
+                        // categoria.imagen = "assets/imagenes/abarrotes.png";
+
+                        // // Envia para registrar la informacion.
+                        // DataBaseHelper.db.registraCategoria(categoria);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => MenuPage()));
+                      },
+                      child: Text(
+                        'SI',
+                        style: TextStyle(
+                          color: Colors.green,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Colors.green)),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'CANCELAR',
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Colors.redAccent)),
+                    ),
+                  ],
+                );
+              });
+        },
+        child: Text("REGISTRAR"),
+        style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(vertical: 15.0),
+            elevation: 5.0,
+            primary: kAcentColor,
+            // padding: EdgeInsets.symmetric(horizontal: 30.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0))),
+      ),
+    );
+  }
+
+  Widget registrarNuevoTipoCategoria(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(right: 20.0),
+      child: ElevatedButton.icon(
+        icon: SvgPicture.asset(
+          "assets/icons/shopping-basket.svg",
+          color: kTextoLigthColor,
+          height: 25.0,
+        ),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Dialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0)),
+                  child: Container(
+                    height: 300.0,
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(18.0),
+                          height: 60.0,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              color: kPrimaryColor,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15.0),
+                                  topRight: Radius.circular(15.0))),
+                          child: Text(
+                            "Registrar Tipo de Categoria",
+                            style: GoogleFonts.berkshireSwash(
+                                color: kTextoLigthColor, fontSize: 18.0),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 20.0),
+                          child: TextField(
+                            maxLength: 25,
+                            controller: descTipoCategoriaController,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: new BorderSide(
+                                    color: kTextoColor,
+                                  ),
+                                  borderRadius: BorderRadius.circular(6.0)),
+                              labelText: 'Tipo de Categoria',
+                              hintText: 'Ingrese tipo categoria',
+                              labelStyle: textStyle,
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: new BorderSide(
+                                    color: kPrimaryColor,
+                                  ),
+                                  borderRadius: BorderRadius.circular(6.0)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              });
+        },
+        label: Text("+ TIPO CAT."),
+        style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+            elevation: 5.0,
+            primary: kAcentColor,
+            // padding: EdgeInsets.symmetric(horizontal: 30.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0))),
+      ),
     );
   }
 }
