@@ -222,14 +222,15 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                     actions: [
                       OutlinedButton(
                         onPressed: () {
-                          // Categoria categoria = new Categoria();
-                          // categoria.descCategoria = descripcionController.text;
-                          // categoria.parTipoCategoria = int.parse(vIdTipoCategoria);
-                          // categoria.observacion = observacionController.text;
-                          // categoria.imagen = "assets/imagenes/abarrotes.png";
+                          Categoria categoria = new Categoria();
+                          categoria.descCategoria = descripcionController.text;
+                          categoria.parTipoCategoria =
+                              int.parse(vIdTipoCategoria);
+                          categoria.observacion = observacionController.text;
+                          categoria.imagen = "assets/imagenes/abarrotes.png";
 
-                          // // Envia para registrar la informacion.
-                          // DataBaseHelper.db.registraCategoria(categoria);
+                          // Envia para registrar la informacion.
+                          DataBaseHelper.db.registraCategoria(categoria);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -243,7 +244,10 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                           ),
                         ),
                         style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Colors.green)),
+                            backgroundColor: Colors.green[50],
+                            side: BorderSide(
+                              color: Colors.green,
+                            )),
                       ),
                       OutlinedButton(
                         onPressed: () {
@@ -256,6 +260,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                           ),
                         ),
                         style: OutlinedButton.styleFrom(
+                            backgroundColor: Colors.red[50],
                             side: BorderSide(color: Colors.redAccent)),
                       ),
                     ],
