@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:eli_market/models/par_tipo_categoria.dart';
 import 'package:eli_market/pantallas/menu_page.dart';
 import 'package:flutter/material.dart';
-import 'package:eli_market/constantes.dart';
-
-import 'package:eli_market/data/database_helper.dart';
-import 'package:eli_market/models/categoria.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:eli_market/constantes.dart';
+import 'package:eli_market/data/database_helper.dart';
+import 'package:eli_market/models/categoria.dart';
 
 //import 'lista_categoria.dart';
 
@@ -31,14 +34,10 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
   TextEditingController descripcionController = TextEditingController();
   TextEditingController observacionController = TextEditingController();
   TextEditingController descTipoCategoriaController = TextEditingController();
+
   String vIdTipoCategoria;
-  //TextEditingController descriptionController = TextEditingController();
-
-  //Categoria categoria;
-
-  // _RegistroCategoriaPageState();
-
   List<DropdownMenuItem<String>> lista;
+  File _imagenCategoria;
 
   @override
   void initState() {
@@ -94,101 +93,120 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
               ),
             ),
           ),
-          Form(
-            key: _formKeyCategoria,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0),
-                  child: TextFormField(
-                    validator: (valor) {
-                      if (valor.isEmpty) {
-                        return 'Ingrese la categoria';
-                      }
-                      return null;
-                    },
-                    maxLength: 40,
-                    controller: descripcionController,
-                    decoration: InputDecoration(
-                      labelText: 'Descripción categoria',
-                      // hintText: 'Ingrese la categoria',
-                      labelStyle: textStyle,
-                      enabledBorder: inputBorderTexto,
-                      focusedBorder: inputBorderTexto,
-                      errorBorder: inputBorderTexto,
-                      focusedErrorBorder: inputBorderTexto,
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKeyCategoria,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 20.0, right: 2.0, top: 7.0, bottom: 7.0),
-                        child: DropdownButtonFormField(
-                          validator: (valor) {
-                            if (valor == null) {
-                              return "Seleccione tipo categoria";
-                            }
-                            return null;
-                          },
-                          decoration: new InputDecoration(
-                            labelText: "Tipo categoria",
-                            // hintText: 'Ingrese tipo categoria',
-                            labelStyle: textStyle,
-                            enabledBorder: inputBorderTexto,
-                            focusedBorder: inputBorderTexto,
-                            errorBorder: inputBorderTexto,
-                            focusedErrorBorder: inputBorderTexto,
-                          ),
-                          isExpanded: true,
-                          // itemHeight: 50.0,
-                          style: textStyle,
-                          value: vIdTipoCategoria,
-                          items: lista,
-                          onChanged: (valor) {
-                            FocusScope.of(context)
-                                .requestFocus(new FocusNode());
-                            // print(valor);
-                            setState(() {
-                              vIdTipoCategoria = valor;
-                            });
-                          },
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0),
+                      child: TextFormField(
+                        validator: (valor) {
+                          if (valor.isEmpty) {
+                            return 'Ingrese la categoria';
+                          }
+                          return null;
+                        },
+                        maxLength: 40,
+                        controller: descripcionController,
+                        decoration: InputDecoration(
+                          labelText: 'Descripción categoria',
+                          // hintText: 'Ingrese la categoria',
+                          labelStyle: textStyle,
+                          enabledBorder: inputBorderTexto,
+                          focusedBorder: inputBorderTexto,
+                          errorBorder: inputBorderTexto,
+                          focusedErrorBorder: inputBorderTexto,
                         ),
                       ),
                     ),
-                    registrarNuevoTipoCategoria(context),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 20.0, right: 2.0, top: 7.0, bottom: 7.0),
+                            child: DropdownButtonFormField(
+                              validator: (valor) {
+                                if (valor == null) {
+                                  return "Seleccione tipo categoria";
+                                }
+                                return null;
+                              },
+                              decoration: new InputDecoration(
+                                labelText: "Tipo categoria",
+                                // hintText: 'Ingrese tipo categoria',
+                                labelStyle: textStyle,
+                                enabledBorder: inputBorderTexto,
+                                focusedBorder: inputBorderTexto,
+                                errorBorder: inputBorderTexto,
+                                focusedErrorBorder: inputBorderTexto,
+                              ),
+                              isExpanded: true,
+                              // itemHeight: 50.0,
+                              style: textStyle,
+                              value: vIdTipoCategoria,
+                              items: lista,
+                              onChanged: (valor) {
+                                FocusScope.of(context)
+                                    .requestFocus(new FocusNode());
+                                // print(valor);
+                                setState(() {
+                                  vIdTipoCategoria = valor;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        registrarNuevoTipoCategoria(context),
+                      ],
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0),
+                      child: TextFormField(
+                        validator: (valor) {
+                          if (valor.isEmpty) {
+                            return "Ingrese observación";
+                          }
+                          return null;
+                        },
+                        maxLines: 2,
+                        controller: observacionController,
+                        decoration: InputDecoration(
+                          labelText: 'Observación',
+                          // hintText: 'Ingrese la observación',
+                          labelStyle: textStyle,
+                          enabledBorder: inputBorderTexto,
+                          focusedBorder: inputBorderTexto,
+                          errorBorder: inputBorderTexto,
+                          focusedErrorBorder: inputBorderTexto,
+                        ),
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: _imagenCategoria != null
+                              ? FileImage(_imagenCategoria)
+                              : AssetImage(
+                                  "assets/imagenes/fondo_bienvenida.jpg"),
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              obtenerImagen();
+                            },
+                            child: Text("Subir imagen"))
+                      ],
+                    ),
+                    registrarNuevaCategoria(context),
                   ],
                 ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0),
-                  child: TextFormField(
-                    validator: (valor) {
-                      if (valor.isEmpty) {
-                        return "Ingrese observación";
-                      }
-                      return null;
-                    },
-                    maxLines: 2,
-                    controller: observacionController,
-                    decoration: InputDecoration(
-                      labelText: 'Observación',
-                      // hintText: 'Ingrese la observación',
-                      labelStyle: textStyle,
-                      enabledBorder: inputBorderTexto,
-                      focusedBorder: inputBorderTexto,
-                      errorBorder: inputBorderTexto,
-                      focusedErrorBorder: inputBorderTexto,
-                    ),
-                  ),
-                ),
-                registrarNuevaCategoria(context)
-              ],
+              ),
             ),
           ),
         ],
@@ -377,5 +395,13 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                 borderRadius: BorderRadius.circular(10.0))),
       ),
     );
+  }
+
+  void obtenerImagen() async {
+    var imagenGaleria =
+        await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _imagenCategoria = imagenGaleria;
+    });
   }
 }
