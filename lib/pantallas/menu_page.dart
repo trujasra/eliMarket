@@ -79,10 +79,10 @@ class _MenuPageState extends State<MenuPage> {
       ),
       body: _paginas[_seleccionPaginaIndex]['pagina'],
       floatingActionButton: FloatingActionButton(
-        foregroundColor: kPrimaryColor,
+        foregroundColor: kIconoInactivoLigth,
         backgroundColor: Colors.white,
         shape: CircleBorder(
-          side: BorderSide(width: 5.0, color: kPrimaryColor),
+          side: BorderSide(width: 5.0, color: kIconoInactivoLigth),
         ),
         onPressed: () {
           setState(() {});
@@ -112,7 +112,7 @@ class _MenuPageState extends State<MenuPage> {
         child: Container(
           height: kBottomNavigationBarHeight + 10,
           decoration: BoxDecoration(
-              color: kPrimaryColor,
+              color: kIconoInactivo,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(25.0),
                   topRight: Radius.circular(25.0))),
@@ -154,7 +154,7 @@ class _MenuPageState extends State<MenuPage> {
               "assets/icons/" + pIcono,
               color: _seleccionPaginaIndex == index
                   ? kTextoLigthColor
-                  : kIconoInactivo,
+                  : kIconoInactivoLigth,
               width: 24.0,
             ),
             onPressed: () {
@@ -175,7 +175,7 @@ class _MenuPageState extends State<MenuPage> {
               fontSize: 11.0,
               color: _seleccionPaginaIndex == index
                   ? kTextoLigthColor
-                  : kIconoInactivo),
+                  : kIconoInactivoLigth),
           // TextStyle(
           //   color: _seleccionPaginaIndex == index
           //       ? kIconLigthColor

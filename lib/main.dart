@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
 
     // Para cambiar el estilo del AppBar
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: kPrimaryColor,
+      systemNavigationBarColor: kIconoInactivo,
     ));
     return MaterialApp(
       debugShowCheckedModeBanner: false,

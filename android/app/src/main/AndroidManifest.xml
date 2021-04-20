@@ -2,7 +2,9 @@
     package="com.example.eli_market">
    <application
         android:label="ElyMarket"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        android:requestLegacyExternalStorage="true"
+        >
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

@@ -64,14 +64,16 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
         children: [
           Container(
             decoration: BoxDecoration(
-                color: kIconoInactivo,
+                color: kIconoInactivo.withAlpha(40),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20.0),
                     bottomRight: Radius.circular(20.0))),
             width: MediaQuery.of(context).size.width,
             height: 90.0,
             child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(
+                left: 10.0,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,14 +81,14 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                   Text(
                     "Para el registro de una nueva categoria debe de llenar todos los campos solicitados",
                     style: GoogleFonts.montserratAlternates(
-                        color: kPrimaryLigthColor, fontSize: 14.0), //
+                        color: kTextoDarkColor, fontSize: 14.0), //
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 9.0, left: 18.0, right: 18.0),
                     child: Text(
                       "* Si no existe en la lista el tipo categoria, debe de hacer click en (+ TIPO CAT) para agregar uno nuevo.",
                       style: GoogleFonts.montserratAlternates(
-                          color: kTextoLigthColor, fontSize: 12.0),
+                          color: kTextoColor, fontSize: 12.0),
                     ),
                   ),
                 ],
@@ -100,36 +102,16 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0),
-                      child: TextFormField(
-                        validator: (valor) {
-                          if (valor.isEmpty) {
-                            return 'Ingrese la categoria';
-                          }
-                          return null;
-                        },
-                        maxLength: 40,
-                        controller: descripcionController,
-                        decoration: InputDecoration(
-                          labelText: 'Descripción categoria',
-                          // hintText: 'Ingrese la categoria',
-                          labelStyle: textStyle,
-                          enabledBorder: inputBorderTexto,
-                          focusedBorder: inputBorderTexto,
-                          errorBorder: inputBorderTexto,
-                          focusedErrorBorder: inputBorderTexto,
-                        ),
-                      ),
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 20.0, right: 2.0, top: 7.0, bottom: 7.0),
+                              left: 20.0,
+                              right: 2.0,
+                              top: 20.0,
+                            ),
                             child: DropdownButtonFormField(
                               validator: (valor) {
                                 if (valor == null) {
@@ -164,6 +146,32 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                         ),
                         registrarNuevoTipoCategoria(context),
                       ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 20.0,
+                        right: 20.0,
+                        top: 20.0,
+                      ),
+                      child: TextFormField(
+                        validator: (valor) {
+                          if (valor.isEmpty) {
+                            return 'Ingrese la categoria';
+                          }
+                          return null;
+                        },
+                        maxLength: 40,
+                        controller: descripcionController,
+                        decoration: InputDecoration(
+                          labelText: 'Descripción categoria',
+                          // hintText: 'Ingrese la categoria',
+                          labelStyle: textStyle,
+                          enabledBorder: inputBorderTexto,
+                          focusedBorder: inputBorderTexto,
+                          errorBorder: inputBorderTexto,
+                          focusedErrorBorder: inputBorderTexto,
+                        ),
+                      ),
                     ),
                     Padding(
                       padding:
@@ -300,7 +308,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
 
   Widget registrarNuevoTipoCategoria(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 20.0, left: 2.0),
+      padding: EdgeInsets.only(right: 20.0, left: 2.0, top: 1.0),
       child: ElevatedButton.icon(
         icon: SvgPicture.asset(
           "assets/icons/shopping-basket.svg",

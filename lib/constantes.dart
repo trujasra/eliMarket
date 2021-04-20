@@ -27,7 +27,9 @@ const Color kTextoLigthColor = Color.fromRGBO(248, 187, 208, 1); //248, 187, 208
 const Color kTextoDarkColor = Color.fromRGBO(42, 34, 147, 1);
 
 const Color kAcentColor = Color.fromRGBO(211, 0, 235, 1);
-const Color kIconoInactivo = Color.fromRGBO(165, 77, 188, 1); //149, 77, 168
+const Color kIconoInactivo = Color.fromRGBO(165, 77, 188, 1);
+const Color kIconoInactivoLigth =
+    Color.fromRGBO(188, 102, 204, 1); //149, 77, 168
 
 // const Color kMenuColor2 = Color.fromRGBO(255, 205, 210, 1);
 // const Color kMenuColor1 = Color.fromRGBO(248, 187, 208, 1);
