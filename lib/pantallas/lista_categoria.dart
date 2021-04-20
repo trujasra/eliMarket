@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -131,7 +132,22 @@ class ListaCategoriaPage extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Image.asset(pCategoria.imagen),
+                        // child: Image.asset(pCategoria.imagen),
+                        child: pCategoria.imagen == null ||
+                                pCategoria.imagen.isEmpty
+                            ? Image.asset(
+                                "assets/imagenes/categoria_ninguno.png",
+                                width: 100.0,
+                              )
+                            : pCategoria.imagen.contains('assets/im')
+                                ? Image.asset(
+                                    pCategoria.imagen,
+                                    width: 100.0,
+                                  )
+                                : Image(
+                                    image: FileImage(File(pCategoria.imagen)),
+                                    width: 100.0,
+                                  ),
                       )),
                   Padding(
                     padding: EdgeInsets.only(top: 5.0),

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 import 'package:eli_market/constantes.dart';
 import 'package:eli_market/data/database_helper.dart';
@@ -37,7 +39,9 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
 
   String vIdTipoCategoria;
   List<DropdownMenuItem<String>> lista;
+
   File _imagenCategoria;
+  final _imagenPicker = ImagePicker();
 
   @override
   void initState() {
@@ -199,14 +203,19 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                     Column(
                       children: [
                         CircleAvatar(
+                          foregroundColor: Colors.red,
                           backgroundImage: _imagenCategoria != null
                               ? FileImage(_imagenCategoria)
                               : AssetImage(
-                                  "assets/imagenes/fondo_bienvenida.jpg"),
+                                  "assets/imagenes/categoria_ninguno.png"),
                         ),
                         ElevatedButton(
                             onPressed: () {
-                              obtenerImagen();
+                              // Seleccion de Galeria
+                              //getImagenArchivo(ImageSource.gallery);
+                              //
+                              // Seleccion de Camara
+                              getImagenArchivo(ImageSource.camera);
                             },
                             child: Text("Subir imagen"))
                       ],
@@ -248,20 +257,8 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                     actions: [
                       OutlinedButton(
                         onPressed: () {
-                          Categoria categoria = new Categoria();
-                          categoria.descCategoria = descripcionController.text;
-                          categoria.parTipoCategoria =
-                              int.parse(vIdTipoCategoria);
-                          categoria.observacion = observacionController.text;
-                          categoria.imagen = "assets/imagenes/abarrotes.png";
-
-                          // Envia para registrar la informacion.
-                          DataBaseHelper.db.registraCategoria(categoria);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      MenuPage()));
+                          // Envia para guardar
+                          guardarRegistroCategoria(context);
                         },
                         child: Text(
                           'SI',
@@ -405,11 +402,34 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
     );
   }
 
-  void obtenerImagen() async {
-    var imagenGaleria =
-        await ImagePicker.pickImage(source: ImageSource.gallery);
+  void getImagenArchivo(ImageSource imageSource) async {
+    // PickedFile imageArchivo = await _imagenPicker.getImage(source: imageSource);
+    PickedFile imageArchivo = await _imagenPicker.getImage(
+        source: imageSource, maxHeight: 800.0, maxWidth: 800.0);
+    // Verifica que no sea nulo
+    if (imageArchivo == null) return;
+    File tmpArchivo = File(imageArchivo.path);
+    final appDir = await getApplicationDocumentsDirectory();
+    final nombreArchivo = basename(imageArchivo.path);
+    tmpArchivo = await tmpArchivo.copy('${appDir.path}/$nombreArchivo');
+    // actualiza el valor de imagen
     setState(() {
-      _imagenCategoria = imagenGaleria;
+      _imagenCategoria = tmpArchivo;
     });
+  }
+
+  // Metodo para gurdar la informacion de la categoria
+  void guardarRegistroCategoria(BuildContext context) {
+    Categoria categoria = new Categoria();
+    categoria.descCategoria = descripcionController.text;
+    categoria.parTipoCategoria = int.parse(vIdTipoCategoria);
+    categoria.observacion = observacionController.text;
+    // categoria.imagen = "assets/imagenes/abarrotes.png";
+    categoria.imagen = _imagenCategoria != null ? _imagenCategoria.path : null;
+
+    // Envia para registrar la informacion.
+    DataBaseHelper.db.registraCategoria(categoria);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => MenuPage()));
   }
 }

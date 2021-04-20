@@ -10,6 +10,12 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Necesita tomar una foto de la galeria</string>
+    <key>NSCameraUsageDescription</key>
+	<string>Necesita tomar una foto usando la camara</string>
+    <key>NSMicrophoneUsageDescription</key>
+	<string>Necesita habilitar el microfono</string>
 	<key>CFBundleName</key>
 	<string>ElyMarket</string>
 	<key>CFBundlePackageType</key>
