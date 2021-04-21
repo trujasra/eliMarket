@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:eli_market/models/par_tipo_categoria.dart';
+//import 'package:eli_market/models/par_tipo_categoria.dart';
 import 'package:eli_market/pantallas/menu_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,7 +38,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
   TextEditingController descTipoCategoriaController = TextEditingController();
 
   String vIdTipoCategoria;
-  List<DropdownMenuItem<String>> lista;
+  //List<DropdownMenuItem<String>> lista;
 
   File _imagenCategoria;
   final _imagenPicker = ImagePicker();
@@ -46,16 +46,16 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
   @override
   void initState() {
     super.initState();
-    lista = [];
+    //lista = [];
     // Metodo para obtener los datos para el combo Tipo categoria
-    DataBaseHelper.db.obtieneTipoCategoria().then((listaMap) {
-      listaMap.map((map) {
-        return obtieneDropDownWiget(map);
-      }).forEach((element) {
-        lista.add(element);
-      });
-      setState(() {});
-    });
+    // DataBaseHelper.db.obtieneTipoCategoria().then((listaMap) {
+    //   listaMap.map((map) {
+    //     return obtieneDropDownWiget(map);
+    //   }).forEach((element) {
+    //     lista.add(element);
+    //   });
+    //   setState(() {});
+    // });
   }
 
   @override
@@ -73,7 +73,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                     bottomLeft: Radius.circular(20.0),
                     bottomRight: Radius.circular(20.0))),
             width: MediaQuery.of(context).size.width,
-            height: 90.0,
+            height: 70.0, //90.0,
             child: Padding(
               padding: const EdgeInsets.only(
                 left: 10.0,
@@ -82,19 +82,22 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Para el registro de una nueva categoria debe de llenar todos los campos solicitados",
-                    style: GoogleFonts.montserratAlternates(
-                        color: kTextoDarkColor, fontSize: 14.0), //
-                  ),
                   Padding(
-                    padding: EdgeInsets.only(top: 9.0, left: 18.0, right: 18.0),
+                    padding: const EdgeInsets.all(15.0),
                     child: Text(
-                      "* Si no existe en la lista el tipo categoria, debe de hacer click en (+ TIPO CAT) para agregar uno nuevo.",
+                      "Para el registro de una nueva categoria debe de llenar todos los campos solicitados",
                       style: GoogleFonts.montserratAlternates(
-                          color: kTextoColor, fontSize: 12.0),
+                          color: kTextoDarkColor, fontSize: 14.0), //
                     ),
                   ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(top: 9.0, left: 18.0, right: 18.0),
+                  //   child: Text(
+                  //     "* Si no existe en la lista el tipo categoria, debe de hacer click en (+ TIPO CAT) para agregar uno nuevo.",
+                  //     style: GoogleFonts.montserratAlternates(
+                  //         color: kTextoColor, fontSize: 12.0),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -106,51 +109,51 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 20.0,
-                              right: 2.0,
-                              top: 20.0,
-                            ),
-                            child: DropdownButtonFormField(
-                              validator: (valor) {
-                                if (valor == null) {
-                                  return "Seleccione tipo categoria";
-                                }
-                                return null;
-                              },
-                              decoration: new InputDecoration(
-                                labelText: "Tipo categoria",
-                                // hintText: 'Ingrese tipo categoria',
-                                labelStyle: textStyle,
-                                enabledBorder: inputBorderTexto,
-                                focusedBorder: inputBorderTexto,
-                                errorBorder: inputBorderTexto,
-                                focusedErrorBorder: inputBorderTexto,
-                              ),
-                              isExpanded: true,
-                              // itemHeight: 50.0,
-                              style: textStyle,
-                              value: vIdTipoCategoria,
-                              items: lista,
-                              onChanged: (valor) {
-                                FocusScope.of(context)
-                                    .requestFocus(new FocusNode());
-                                // print(valor);
-                                setState(() {
-                                  vIdTipoCategoria = valor;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        registrarNuevoTipoCategoria(context),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Expanded(
+                    //       child: Padding(
+                    //         padding: EdgeInsets.only(
+                    //           left: 20.0,
+                    //           right: 2.0,
+                    //           top: 20.0,
+                    //         ),
+                    //         child: DropdownButtonFormField(
+                    //           validator: (valor) {
+                    //             if (valor == null) {
+                    //               return "Seleccione tipo categoria";
+                    //             }
+                    //             return null;
+                    //           },
+                    //           decoration: new InputDecoration(
+                    //             labelText: "Tipo categoria",
+                    //             // hintText: 'Ingrese tipo categoria',
+                    //             labelStyle: textStyle,
+                    //             enabledBorder: inputBorderTexto,
+                    //             focusedBorder: inputBorderTexto,
+                    //             errorBorder: inputBorderTexto,
+                    //             focusedErrorBorder: inputBorderTexto,
+                    //           ),
+                    //           isExpanded: true,
+                    //           // itemHeight: 50.0,
+                    //           style: textStyle,
+                    //           value: vIdTipoCategoria,
+                    //           items: lista,
+                    //           onChanged: (valor) {
+                    //             FocusScope.of(context)
+                    //                 .requestFocus(new FocusNode());
+                    //             // print(valor);
+                    //             setState(() {
+                    //               vIdTipoCategoria = valor;
+                    //             });
+                    //           },
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     registrarNuevoTipoCategoria(context),
+                    //   ],
+                    // ),
                     Padding(
                       padding: EdgeInsets.only(
                         left: 20.0,
@@ -200,26 +203,48 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                         ),
                       ),
                     ),
-                    Column(
-                      children: [
-                        CircleAvatar(
-                          foregroundColor: Colors.red,
-                          backgroundImage: _imagenCategoria != null
-                              ? FileImage(_imagenCategoria)
-                              : AssetImage(
-                                  "assets/imagenes/categoria_ninguno.png"),
-                        ),
-                        ElevatedButton(
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            foregroundColor: Colors.red,
+                            backgroundImage: _imagenCategoria != null
+                                ? FileImage(_imagenCategoria)
+                                : AssetImage(
+                                    "assets/imagenes/categoria_ninguno.png"),
+                          ),
+                          SizedBox(
+                            width: 15.0,
+                          ),
+                          ElevatedButton.icon(
+                            label: Text("Cargar imagen"),
+                            icon: SvgPicture.asset(
+                              "assets/icons/upload-file.svg",
+                              color: kTextoLigthColor,
+                              height: 25.0,
+                            ),
                             onPressed: () {
                               // Seleccion de Galeria
-                              //getImagenArchivo(ImageSource.gallery);
+                              getImagenArchivo(ImageSource.gallery);
                               //
                               // Seleccion de Camara
-                              getImagenArchivo(ImageSource.camera);
+                              //getImagenArchivo(ImageSource.camera);
                             },
-                            child: Text("Subir imagen"))
-                      ],
+                            style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 15.0),
+                                elevation: 5.0,
+                                primary: kIconoInactivoLigth,
+                                // padding: EdgeInsets.symmetric(horizontal: 30.0),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0))),
+                          )
+                        ],
+                      ),
                     ),
+
                     registrarNuevaCategoria(context),
                   ],
                 ),
@@ -231,13 +256,13 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
     );
   }
 
-  DropdownMenuItem<String> obtieneDropDownWiget(
-      ParTipoCategoria tipoCategoria) {
-    return DropdownMenuItem<String>(
-      value: tipoCategoria.idTipoCategoria.toString(),
-      child: Text(tipoCategoria.tipoCategoria),
-    );
-  }
+  // DropdownMenuItem<String> obtieneDropDownWiget(
+  //     ParTipoCategoria tipoCategoria) {
+  //   return DropdownMenuItem<String>(
+  //     value: tipoCategoria.idTipoCategoria.toString(),
+  //     child: Text(tipoCategoria.tipoCategoria),
+  //   );
+  // }
 
   Widget registrarNuevaCategoria(BuildContext context) {
     return Container(
@@ -303,104 +328,104 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
     );
   }
 
-  Widget registrarNuevoTipoCategoria(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(right: 20.0, left: 2.0, top: 1.0),
-      child: ElevatedButton.icon(
-        icon: SvgPicture.asset(
-          "assets/icons/shopping-basket.svg",
-          color: kTextoLigthColor,
-          height: 25.0,
-        ),
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return Dialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0)),
-                  child: Form(
-                    key: _formKeyTipoCategoria,
-                    child: Container(
-                      height: 250.0,
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(18.0),
-                            height: 60.0,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                                color: kPrimaryColor,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15.0),
-                                    topRight: Radius.circular(15.0))),
-                            child: Text(
-                              "Registrar Tipo de Categoria",
-                              style: GoogleFonts.berkshireSwash(
-                                  color: kTextoLigthColor, fontSize: 18.0),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 20.0),
-                            child: TextFormField(
-                              validator: (valor) {
-                                if (valor.isEmpty) {
-                                  return 'Ingrese el tipo de categoria';
-                                }
-                                return null;
-                              },
-                              maxLength: 25,
-                              controller: descTipoCategoriaController,
-                              decoration: InputDecoration(
-                                labelText: 'Tipo de Categoria',
-                                // hintText: 'Ingrese tipo categoria',
-                                labelStyle: textStyle,
-                                enabledBorder: inputBorderTexto,
-                                focusedBorder: inputBorderTexto,
-                                errorBorder: inputBorderTexto,
-                                focusedErrorBorder: inputBorderTexto,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.70,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                // Verifica si todo esta validadado
-                                if (_formKeyTipoCategoria.currentState
-                                    .validate()) {
-                                  // Aca se gurda la informacion
-                                }
-                              },
-                              child: Text("REGISTRAR"),
-                              style: ElevatedButton.styleFrom(
-                                  primary: kAcentColor,
-                                  padding: EdgeInsets.symmetric(vertical: 15.0),
-                                  elevation: 5.0,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10.0))),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              });
-        },
-        label: Text("+ TIPO CAT."),
-        style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-            elevation: 5.0,
-            primary: kAcentColor,
-            // padding: EdgeInsets.symmetric(horizontal: 30.0),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0))),
-      ),
-    );
-  }
+  // Widget registrarNuevoTipoCategoria(BuildContext context) {
+  //   return Padding(
+  //     padding: EdgeInsets.only(right: 20.0, left: 2.0, top: 1.0),
+  //     child: ElevatedButton.icon(
+  //       icon: SvgPicture.asset(
+  //         "assets/icons/shopping-basket.svg",
+  //         color: kTextoLigthColor,
+  //         height: 25.0,
+  //       ),
+  //       onPressed: () {
+  //         showDialog(
+  //             context: context,
+  //             builder: (context) {
+  //               return Dialog(
+  //                 shape: RoundedRectangleBorder(
+  //                     borderRadius: BorderRadius.circular(15.0)),
+  //                 child: Form(
+  //                   key: _formKeyTipoCategoria,
+  //                   child: Container(
+  //                     height: 250.0,
+  //                     child: Column(
+  //                       children: [
+  //                         Container(
+  //                           padding: EdgeInsets.all(18.0),
+  //                           height: 60.0,
+  //                           width: MediaQuery.of(context).size.width,
+  //                           decoration: BoxDecoration(
+  //                               color: kPrimaryColor,
+  //                               borderRadius: BorderRadius.only(
+  //                                   topLeft: Radius.circular(15.0),
+  //                                   topRight: Radius.circular(15.0))),
+  //                           child: Text(
+  //                             "Registrar Tipo de Categoria",
+  //                             style: GoogleFonts.berkshireSwash(
+  //                                 color: kTextoLigthColor, fontSize: 18.0),
+  //                           ),
+  //                         ),
+  //                         Padding(
+  //                           padding: EdgeInsets.symmetric(
+  //                               horizontal: 20.0, vertical: 20.0),
+  //                           child: TextFormField(
+  //                             validator: (valor) {
+  //                               if (valor.isEmpty) {
+  //                                 return 'Ingrese el tipo de categoria';
+  //                               }
+  //                               return null;
+  //                             },
+  //                             maxLength: 25,
+  //                             controller: descTipoCategoriaController,
+  //                             decoration: InputDecoration(
+  //                               labelText: 'Tipo de Categoria',
+  //                               // hintText: 'Ingrese tipo categoria',
+  //                               labelStyle: textStyle,
+  //                               enabledBorder: inputBorderTexto,
+  //                               focusedBorder: inputBorderTexto,
+  //                               errorBorder: inputBorderTexto,
+  //                               focusedErrorBorder: inputBorderTexto,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         Container(
+  //                           width: MediaQuery.of(context).size.width * 0.70,
+  //                           child: ElevatedButton(
+  //                             onPressed: () {
+  //                               // Verifica si todo esta validadado
+  //                               if (_formKeyTipoCategoria.currentState
+  //                                   .validate()) {
+  //                                 // Aca se gurda la informacion
+  //                               }
+  //                             },
+  //                             child: Text("REGISTRAR"),
+  //                             style: ElevatedButton.styleFrom(
+  //                                 primary: kAcentColor,
+  //                                 padding: EdgeInsets.symmetric(vertical: 15.0),
+  //                                 elevation: 5.0,
+  //                                 shape: RoundedRectangleBorder(
+  //                                     borderRadius:
+  //                                         BorderRadius.circular(10.0))),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               );
+  //             });
+  //       },
+  //       label: Text("+ TIPO CAT."),
+  //       style: ElevatedButton.styleFrom(
+  //           padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+  //           elevation: 5.0,
+  //           primary: kAcentColor,
+  //           // padding: EdgeInsets.symmetric(horizontal: 30.0),
+  //           shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.circular(10.0))),
+  //     ),
+  //   );
+  // }
 
   void getImagenArchivo(ImageSource imageSource) async {
     // PickedFile imageArchivo = await _imagenPicker.getImage(source: imageSource);
@@ -422,7 +447,8 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
   void guardarRegistroCategoria(BuildContext context) {
     Categoria categoria = new Categoria();
     categoria.descCategoria = descripcionController.text;
-    categoria.parTipoCategoria = int.parse(vIdTipoCategoria);
+    // categoria.parTipoCategoria = int.parse(vIdTipoCategoria);
+    categoria.parTipoCategoria = 7; // Otros;
     categoria.observacion = observacionController.text;
     // categoria.imagen = "assets/imagenes/abarrotes.png";
     categoria.imagen = _imagenCategoria != null ? _imagenCategoria.path : null;
