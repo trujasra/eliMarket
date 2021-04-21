@@ -83,9 +83,9 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "Para el registro de una nueva categoria debe de llenar todos los campos solicitados",
+                      "Para el registro de una nueva categoria debe de llenar todos los campos solicitados y cargar la imagen.",
                       style: GoogleFonts.montserratAlternates(
                           color: kTextoDarkColor, fontSize: 14.0), //
                     ),
