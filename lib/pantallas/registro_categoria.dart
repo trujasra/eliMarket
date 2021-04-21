@@ -73,7 +73,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                     bottomLeft: Radius.circular(20.0),
                     bottomRight: Radius.circular(20.0))),
             width: MediaQuery.of(context).size.width,
-            height: 70.0, //90.0,
+            height: 75.0, //90.0,
             child: Padding(
               padding: const EdgeInsets.only(
                 left: 10.0,
@@ -204,7 +204,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 20.0),
+                      padding: EdgeInsets.only(left: 20.0, top: 20.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -216,7 +216,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                                     "assets/imagenes/categoria_ninguno.png"),
                           ),
                           SizedBox(
-                            width: 15.0,
+                            width: 25.0,
                           ),
                           ElevatedButton.icon(
                             label: Text("Cargar imagen"),
@@ -271,7 +271,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
 
   Widget registrarNuevaCategoria(BuildContext context) {
     return Container(
-      margin: new EdgeInsets.only(top: 20.0),
+      margin: new EdgeInsets.only(top: 40.0),
       width: MediaQuery.of(context).size.width * 0.90,
       child: ElevatedButton(
         onPressed: () {
