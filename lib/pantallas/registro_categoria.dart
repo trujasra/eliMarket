@@ -211,7 +211,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                           CircleAvatar(
                             foregroundColor: Colors.red,
                             backgroundImage: _imagenCategoria != null
-                                ? FileImage(_imagenCategoria)
+                                ? FileImage(File(_imagenCategoria.path))
                                 : AssetImage(
                                     "assets/imagenes/categoria_ninguno.png"),
                           ),
@@ -226,8 +226,13 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                               height: 25.0,
                             ),
                             onPressed: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (builder) =>
+                                      seleccionArchivo(context));
+
                               // Seleccion de Galeria
-                              getImagenArchivo(ImageSource.gallery);
+                              //getImagenArchivo(ImageSource.gallery);
                               //
                               // Seleccion de Camara
                               //getImagenArchivo(ImageSource.camera);
@@ -426,6 +431,77 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
   //     ),
   //   );
   // }
+
+  Widget seleccionArchivo(BuildContext context) {
+    return Container(
+      height: 110.0,
+      width: MediaQuery.of(context).size.width,
+      // margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+      color: kPrimaryLigthColor,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 10.0,
+          ),
+          Text(
+            "Elige como cargar la imagen de: ",
+            style: TextStyle(fontSize: 16.0),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              OutlinedButton.icon(
+                onPressed: () {
+                  // Seleccion de Camara
+                  getImagenArchivo(ImageSource.camera);
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.camera_alt,
+                  color: kPrimaryDarkColor,
+                ),
+                label: Text(
+                  "Camara",
+                  style: TextStyle(color: kPrimaryDarkColor),
+                ),
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: kAcentColor.withAlpha(80),
+                    side: BorderSide(
+                      color: kAcentColor,
+                    )),
+              ),
+              SizedBox(
+                width: 30.0,
+              ),
+              OutlinedButton.icon(
+                onPressed: () {
+                  // Seleccion de Galeria
+                  getImagenArchivo(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.image,
+                  color: kPrimaryDarkColor,
+                ),
+                label: Text(
+                  "Galeria",
+                  style: TextStyle(color: kPrimaryDarkColor),
+                ),
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: kAcentColor.withAlpha(80),
+                    side: BorderSide(
+                      color: kAcentColor,
+                    )),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   void getImagenArchivo(ImageSource imageSource) async {
     // PickedFile imageArchivo = await _imagenPicker.getImage(source: imageSource);
