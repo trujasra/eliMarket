@@ -22,7 +22,7 @@ class RegistroCategoriaPage extends StatefulWidget {
 
 class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
   // LLaves par alos formularios
-  final _formKeyTipoCategoria = GlobalKey<FormState>();
+  //final _formKeyTipoCategoria = GlobalKey<FormState>();
   final _formKeyCategoria = GlobalKey<FormState>();
 
   // Estilos
@@ -163,14 +163,14 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                       child: TextFormField(
                         validator: (valor) {
                           if (valor.isEmpty) {
-                            return 'Ingrese la categoria';
+                            return 'Ingrese el nombre de la categoria';
                           }
                           return null;
                         },
                         maxLength: 40,
                         controller: descripcionController,
                         decoration: InputDecoration(
-                          labelText: 'Descripción categoria',
+                          labelText: 'Nombre categoria',
                           // hintText: 'Ingrese la categoria',
                           labelStyle: textStyle,
                           enabledBorder: inputBorderTexto,
@@ -186,14 +186,14 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                       child: TextFormField(
                         validator: (valor) {
                           if (valor.isEmpty) {
-                            return "Ingrese observación";
+                            return "Ingrese descripción/observación";
                           }
                           return null;
                         },
                         maxLines: 2,
                         controller: observacionController,
                         decoration: InputDecoration(
-                          labelText: 'Observación',
+                          labelText: 'Descripción/Observación',
                           // hintText: 'Ingrese la observación',
                           labelStyle: textStyle,
                           enabledBorder: inputBorderTexto,
@@ -522,15 +522,20 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
   // Metodo para gurdar la informacion de la categoria
   void guardarRegistroCategoria(BuildContext context) {
     Categoria categoria = new Categoria();
-    categoria.descCategoria = descripcionController.text;
+    categoria.descCategoria = descripcionController.text.trim();
     // categoria.parTipoCategoria = int.parse(vIdTipoCategoria);
     categoria.parTipoCategoria = 7; // Otros;
-    categoria.observacion = observacionController.text;
+    categoria.observacion = observacionController.text.trim();
     // categoria.imagen = "assets/imagenes/abarrotes.png";
     categoria.imagen = _imagenCategoria != null ? _imagenCategoria.path : null;
 
     // Envia para registrar la informacion.
     DataBaseHelper.db.registraCategoria(categoria);
+    // Envia un mensaje
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Se registro correctamente.'),
+    ));
+
     Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) => MenuPage()));
   }

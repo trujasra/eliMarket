@@ -1,12 +1,14 @@
 import 'dart:io' as io;
 import 'dart:async';
-import 'package:eli_market/models/par_tipo_categoria.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:intl/intl.dart';
 
 import 'package:eli_market/models/categoria.dart';
+import 'package:eli_market/models/par_tipo_categoria.dart';
+import 'package:eli_market/models/producto.dart';
+import 'package:eli_market/models/producto_bitacora.dart';
 
 class DataBaseHelper {
   static final DataBaseHelper db = DataBaseHelper._();
@@ -261,7 +263,7 @@ class DataBaseHelper {
     return listaCategoria;
   }
 
-  // Operacion lista : Obtiene el registro por el identificador de Categoria de la BD
+  // Operacion Adicionar : Registra el objeto categoria a la BD
   Future<Categoria> registraCategoria(Categoria categoria) async {
     var dbClient = await database;
 
@@ -278,6 +280,11 @@ class DataBaseHelper {
   // Operacion actualizacion : Actualiza el objeto categoria a la BD
   Future<int> actualizaCategoria(Categoria categoria) async {
     var dbClient = await database;
+
+    categoria.usuarioModificacion = "ramiro.trujillo";
+    categoria.fechaModificacion =
+        DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
+
     var resultado = await dbClient.update(TABLA_CATEGORIA, categoria.toMap(),
         where: '$ID_CATEGORIA = ?', whereArgs: [categoria.idCategoria]);
     return resultado;
@@ -286,8 +293,13 @@ class DataBaseHelper {
   // Operacion eliminacion : Eliminacion logica Estado_regstro =0 objeto Categoria a la BD
   Future<int> eliminaCategoria(int idCategoria) async {
     var dbClient = await database;
+
+    String vUsuarioModificacion = "ramiro.trujillo";
+    String vFechaModificacion =
+        DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
+
     String vSql =
-        "UPDATE $ESTADO_REGISTRO = 0 FROM $TABLA_CATEGORIA WHERE $ID_CATEGORIA = $idCategoria";
+        "UPDATE SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = $vUsuarioModificacion, $FECHA_MODIFICACION = $vFechaModificacion  FROM $TABLA_CATEGORIA WHERE $ID_CATEGORIA = $idCategoria";
     var resultado = await dbClient.rawUpdate(vSql);
     return resultado;
   }
@@ -320,10 +332,16 @@ class DataBaseHelper {
     return listaTipoCategoria;
   }
 
-  // Operacion lista : Obtiene el registro por el identificador de Tipo Categoria de la BD
+  // Operacion Adicionar : Registra el objeto Tipo Categoria a la BD
   Future<ParTipoCategoria> registraTipoCategoria(
       ParTipoCategoria tipoCategoria) async {
     var dbClient = await database;
+
+    tipoCategoria.estadoRegistro = true;
+    tipoCategoria.usuarioRegistro = "ramiro.trujillo";
+    tipoCategoria.fechaRegistro =
+        DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now());
+
     tipoCategoria.idTipoCategoria =
         await dbClient.insert(TABLA_TIPO_CATEGORIA, tipoCategoria.toMap());
     return tipoCategoria;
@@ -332,6 +350,11 @@ class DataBaseHelper {
   // Operacion actualizacion : Actualiza el objeto Tipo Categoria a la BD
   Future<int> actualizaTipoCategoria(ParTipoCategoria tipoCategoria) async {
     var dbClient = await database;
+
+    tipoCategoria.usuarioModificacion = "ramiro.trujillo";
+    tipoCategoria.fechaModificacion =
+        DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
+
     var resultado = await dbClient.update(
         TABLA_TIPO_CATEGORIA, tipoCategoria.toMap(),
         where: '$ID_TIPO_CATEGORIA = ?',
@@ -342,55 +365,189 @@ class DataBaseHelper {
   // Operacion eliminacion : Eliminacion logica Estado_registro =0 objeto Tipo Categoria a la BD
   Future<int> eliminaTipoCategoria(int idTipoCategoria) async {
     var dbClient = await database;
+
+    String vUsuarioModificacion = "ramiro.trujillo";
+    String vFechaModificacion =
+        DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
+
     String vSql =
-        "UPDATE $ESTADO_REGISTRO = 0 FROM $TABLA_TIPO_CATEGORIA WHERE $ID_TIPO_CATEGORIA = $idTipoCategoria";
+        "UPDATE SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = $vUsuarioModificacion, $FECHA_MODIFICACION = $vFechaModificacion FROM $TABLA_TIPO_CATEGORIA WHERE $ID_TIPO_CATEGORIA = $idTipoCategoria";
     var resultado = await dbClient.rawUpdate(vSql);
     return resultado;
   }
 
-  // Future<Persona> registraPersona(Persona persona) async {
-  //   var dbCliente = await dbase;
-  //   persona.id = await dbCliente.insert(TABLE, persona.toMap());
-  //   return persona;
+// PRODUCTO
+  // Operacion lista : Obtiene todos los productos de la BD
+  Future<List<Producto>> obtieneProducto() async {
+    var dbClient = await database;
+    List<Map> map = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_PRODUCTO WHERE $ESTADO_REGISTRO = 1 ORDER BY $DESC_PRODUCTO ASC");
+    List<Producto> listaProducto = [];
+    if (map.length > 0) {
+      for (var i = 0; i < map.length; i++) {
+        listaProducto.add(Producto.fromMap(map[i]));
+      }
+    }
+    return listaProducto;
+  }
 
-  //   /*await dbClient.transaction((txn) {
-  //     var query = "INSERT INTO $TABLE($NAME, $LAST_NAME) VALUES('" +
-  //         persona.nombre +
-  //         "','" +
-  //         persona.apellidos +
-  //         "')";
-  //     return txn.rawQuery(query);
-  //   });*/
-  // }
+  // Operacion producto : Obtiene el registro por el identificador de producto de la BD
+  Future<Producto> obtieneProductoPorId(int idProducto) async {
+    var dbClient = await database;
+    List<Map> map = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_PRODUCTO WHERE $ESTADO_REGISTRO = 1 AND $ID_PRODUCTO = $idProducto");
+    Producto producto = Producto();
+    if (map.length > 0) {
+      producto = Producto.fromMap(map[0]);
+    }
+    return producto;
+  }
 
-  // Future<List<Persona>> obtienePersona() async {
-  //   var dbClient = await dbase;
-  //   List<Map> maps =
-  //       await dbClient.query(TABLE, columns: [ID, NAME, LAST_NAME]);
-  //   // List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE");
-  //   List<Persona> listaPersona = [];
-  //   if (maps.length > 0) {
-  //     for (int i = 0; i < maps.length; i++) {
-  //       listaPersona.add(Persona.fromMap(maps[i]));
-  //     }
-  //   }
-  //   return listaPersona;
-  // }
+  // Operacion lista : Obtiene los productos por el identificador de categoria de la BD
+  Future<List<Producto>> obtieneProductoPorIdCategoria(int idCategoria) async {
+    var dbClient = await database;
+    List<Map> map = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_PRODUCTO WHERE $ESTADO_REGISTRO = 1 AND $ID_CATEGORIA = $idCategoria ORDER BY $DESC_PRODUCTO ASC");
+    List<Producto> listaProducto = [];
+    if (map.length > 0) {
+      for (var i = 0; i < map.length; i++) {
+        listaProducto.add(Producto.fromMap(map[i]));
+      }
+    }
+    return listaProducto;
+  }
 
-  // Future<int> eliminaPersona(int id) async {
-  //   var dbCliente = await dbase;
-  //   return await dbCliente.delete(TABLE, where: '$ID = ?', whereArgs: [id]);
-  // }
+  // Operacion Adicionar : Registra el objeto Producto a la BD
+  Future<Producto> registraProducto(Producto producto) async {
+    var dbClient = await database;
 
-  // Future<int> actualizaPersona(Persona persona) async {
-  //   var dbCliente = await dbase;
-  //   return await dbCliente.update(TABLE, persona.toMap(),
-  //       where: '$ID = ?', whereArgs: [persona.id]);
-  // }
+    producto.estadoRegistro = true;
+    producto.usuarioRegistro = "ramiro.trujillo";
+    producto.fechaRegistro =
+        DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now());
 
-  // Future close() async {
-  //   var dbCliente = await dbase;
-  //   dbCliente.close();
-  // }
+    producto.idProducto =
+        await dbClient.insert(TABLA_PRODUCTO, producto.toMap());
+    return producto;
+  }
 
+  // Operacion actualizacion : Actualiza el objeto Producto a la BD
+  Future<int> actualizaProducto(Producto producto) async {
+    var dbClient = await database;
+
+    producto.usuarioModificacion = "ramiro.trujillo";
+    producto.fechaModificacion =
+        DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
+
+    var resultado = await dbClient.update(TABLA_PRODUCTO, producto.toMap(),
+        where: '$ID_PRODUCTO = ?', whereArgs: [producto.idProducto]);
+    return resultado;
+  }
+
+  // Operacion eliminacion : Eliminacion logica Estado_registro =0 objeto Producto a la BD
+  Future<int> eliminaProducto(int idProducto) async {
+    var dbClient = await database;
+
+    String vUsuarioModificacion = "ramiro.trujillo";
+    String vFechaModificacion =
+        DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
+
+    String vSql =
+        "UPDATE SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = $vUsuarioModificacion, $FECHA_MODIFICACION = $vFechaModificacion FROM $TABLA_PRODUCTO WHERE $ID_PRODUCTO = $idProducto";
+    var resultado = await dbClient.rawUpdate(vSql);
+    return resultado;
+  }
+
+  // PRODUCTO BITACORA
+  // Operacion lista : Obtiene todos los productos bitacora de la BD
+  Future<List<ProductoBitacora>> obtieneProductoBitacora() async {
+    var dbClient = await database;
+    List<Map> map = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_PRODUCTO_BITACORA WHERE $ESTADO_REGISTRO = 1 ORDER BY $ID_PRODUCTO_BITACORA ASC");
+    List<ProductoBitacora> listaProductoBitacora = [];
+    if (map.length > 0) {
+      for (var i = 0; i < map.length; i++) {
+        listaProductoBitacora.add(ProductoBitacora.fromMap(map[i]));
+      }
+    }
+    return listaProductoBitacora;
+  }
+
+  // Operacion producto bitacora : Obtiene el registro por el identificador de producto bitacora de la BD
+  Future<ProductoBitacora> obtieneProductoBitacoraPorId(
+      int idProductoBitacora) async {
+    var dbClient = await database;
+    List<Map> map = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_PRODUCTO_BITACORA WHERE $ESTADO_REGISTRO = 1 AND $ID_PRODUCTO_BITACORA = $idProductoBitacora");
+    ProductoBitacora productoBitacora = ProductoBitacora();
+    if (map.length > 0) {
+      productoBitacora = ProductoBitacora.fromMap(map[0]);
+    }
+    return productoBitacora;
+  }
+
+  // Operacion lista : Obtiene los producto bitacora por el identificador de producto de la BD
+  Future<List<ProductoBitacora>> obtieneProductoBitacoraPorIdProducto(
+      int idProducto) async {
+    var dbClient = await database;
+    List<Map> map = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_PRODUCTO_BITACORA WHERE $ESTADO_REGISTRO = 1 AND $ID_PRODUCTO = $idProducto ORDER BY $FECHA_MODIFICACION DESC");
+    List<ProductoBitacora> listaProductoBitacora = [];
+    if (map.length > 0) {
+      for (var i = 0; i < map.length; i++) {
+        listaProductoBitacora.add(ProductoBitacora.fromMap(map[i]));
+      }
+    }
+    return listaProductoBitacora;
+  }
+
+  // Operacion Adicionar : Registra el objeto Producto Bitacora a la BD
+  Future<ProductoBitacora> registraProductoBitacora(
+      ProductoBitacora productoBitacora) async {
+    var dbClient = await database;
+
+    productoBitacora.estadoRegistro = true;
+    productoBitacora.usuarioRegistro = "ramiro.trujillo";
+    productoBitacora.fechaRegistro =
+        DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now());
+
+    productoBitacora.idProductoBitacora = await dbClient.insert(
+        TABLA_PRODUCTO_BITACORA, productoBitacora.toMap());
+    return productoBitacora;
+  }
+
+  // Operacion actualizacion : Actualiza el objeto Producto Bitacora a la BD
+  Future<int> actualizaProductoBitacora(
+      ProductoBitacora productoBitacora) async {
+    var dbClient = await database;
+
+    productoBitacora.usuarioModificacion = "ramiro.trujillo";
+    productoBitacora.fechaModificacion =
+        DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
+
+    var resultado = await dbClient.update(
+        TABLA_PRODUCTO_BITACORA, productoBitacora.toMap(),
+        where: '$ID_PRODUCTO_BITACORA = ?',
+        whereArgs: [productoBitacora.idProductoBitacora]);
+    return resultado;
+  }
+
+  // Operacion eliminacion : Eliminacion logica Estado_registro =0 objeto Producto Bitacora a la BD
+  Future<int> eliminaProductoBitacora(int idProductoBitacora) async {
+    var dbClient = await database;
+
+    String vUsuarioModificacion = "ramiro.trujillo";
+    String vFechaModificacion =
+        DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
+
+    String vSql =
+        "UPDATE SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = $vUsuarioModificacion, $FECHA_MODIFICACION = $vFechaModificacion FROM $TABLA_PRODUCTO_BITACORA WHERE $ID_PRODUCTO_BITACORA = $idProductoBitacora";
+    var resultado = await dbClient.rawUpdate(vSql);
+    return resultado;
+  }
+
+  Future close() async {
+    var dbCliente = await database;
+    dbCliente.close();
+  }
 }

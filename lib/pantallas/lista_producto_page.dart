@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:eli_market/models/producto.dart';
+import 'package:eli_market/pantallas/registro_producto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +12,7 @@ import 'package:eli_market/models/categoria.dart';
 
 class ListaProductoPage extends StatelessWidget {
   //final String miProducto;
-  Categoria oCategoria;
+  final Categoria oCategoria;
   ListaProductoPage({this.oCategoria});
 
   @override
@@ -32,7 +36,14 @@ class ListaProductoPage extends StatelessWidget {
           IconButton(
               icon: SvgPicture.asset("assets/icons/shopping-cart-1.svg",
                   color: kTextoLigthColor),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RegistroProductoPage(
+                              oCategoria: oCategoria,
+                            )));
+              }),
         ],
         title: Text(oCategoria.descCategoria,
             style: GoogleFonts.berkshireSwash(
@@ -40,10 +51,11 @@ class ListaProductoPage extends StatelessWidget {
             )),
       ),
       body: FutureBuilder(
-        future: DataBaseHelper.db.obtieneCategoria(),
+        future: DataBaseHelper.db
+            .obtieneProductoPorIdCategoria(oCategoria.idCategoria),
         // initialData: InitialData,
         builder:
-            (BuildContext context, AsyncSnapshot<List<Categoria>> snapshot) {
+            (BuildContext context, AsyncSnapshot<List<Producto>> snapshot) {
           //print(snapshot.connectionState);
           // Verifica si esta esperando la data
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -57,21 +69,22 @@ class ListaProductoPage extends StatelessWidget {
     );
   }
 
-  Widget _listaProductos(List<Categoria> listCategoria) {
+  Widget _listaProductos(List<Producto> listProducto) {
     return ListView.builder(
-        itemCount: listCategoria.length,
+        itemCount: listProducto.length,
         itemBuilder: (BuildContext context, int i) {
-          Categoria oCategoria = listCategoria[i];
+          Producto oProducto = listProducto[i];
           // print(snapshot.data);
-          return itemProducto(oCategoria);
+          return itemProducto(oProducto);
         });
   }
 
-  Widget itemProducto(Categoria oCategoria) {
+  Widget itemProducto(Producto oProducto) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+        padding:
+            EdgeInsets.only(top: 12.0, bottom: 0.0, left: 10.0, right: 10.0),
         decoration: BoxDecoration(
           color: Color.fromRGBO(255, 233, 219, 1),
           borderRadius: BorderRadius.circular(18.0),
@@ -84,8 +97,28 @@ class ListaProductoPage extends StatelessWidget {
               children: [
                 CircleAvatar(
                   backgroundColor: Colors.white,
-                  backgroundImage: AssetImage(oCategoria.imagen),
-                  radius: 36,
+                  radius: 36.0,
+                  child: ClipOval(
+                    // borderRadius: BorderRadius.circular(36.0),
+                    child: oProducto.imagen == null || oProducto.imagen.isEmpty
+                        ? Image.asset(
+                            "assets/imagenes/categoria_ninguno.png",
+                            width: 100.0,
+                          )
+                        : oProducto.imagen.contains('assets/im')
+                            ? Image.asset(
+                                oProducto.imagen,
+                                width: 100.0,
+                              )
+                            : Image.file(
+                                File(oProducto.imagen),
+                                width: 100.0,
+                                height: 100.0,
+                                fit: BoxFit.cover,
+                              ),
+                  ),
+                  // backgroundImage: AssetImage(oProducto.imagen),
+                  // width: 100.0,
                 ),
                 SizedBox(
                   width: 8.0,
@@ -96,24 +129,24 @@ class ListaProductoPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        oCategoria.descCategoria,
+                        oProducto.descProducto,
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 17,
                             fontWeight: FontWeight.bold,
-                            color: kTextoDarkColor,
+                            color: kTextoColor,
                             height: 1.5),
                       ),
                       Text(
-                        oCategoria.observacion,
+                        oProducto.observacion,
                         // overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: 14, color: kTextoColor, height: 1.5),
+                            fontSize: 15, color: kTextoDarkColor, height: 1.5),
                       ),
                       Text(
-                        "Lugar : ${oCategoria.observacion}",
+                        "Lugar : ${oProducto.lugarCompra}",
                         // overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: 13, color: kIconoInactivo, height: 1.5),
+                            fontSize: 14, color: kIconoInactivo, height: 1.5),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -128,7 +161,7 @@ class ListaProductoPage extends StatelessWidget {
                                 height: 1.5),
                           ),
                           Text(
-                            "${oCategoria.parTipoCategoria} Bs.",
+                            "${oProducto.precio} Bs.",
                             // overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 20,
@@ -147,20 +180,20 @@ class ListaProductoPage extends StatelessWidget {
             // ),
             Divider(
               color: Colors.pink[200],
-              height: 3.0,
+              height: 2.0,
               thickness: 1,
             ),
-            SizedBox(
-              height: 5.0,
-            ),
+            // SizedBox(
+            //   height: 5.0,
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _botonDetalle(Icons.delete, "Eliminar", kPrimaryDarkColor),
                 _botonDetalle(
-                    Icons.edit, "Modificar", Color.fromRGBO(47, 161, 7, 1)),
-                _botonDetalle(Icons.search, "Ver detalle",
-                    Color.fromRGBO(149, 35, 192, 1)),
+                    Icons.delete, "Eliminar", Colors.redAccent, oProducto),
+                _botonDetalle(Icons.edit, "Modificar", Colors.green, oProducto),
+                _botonDetalle(
+                    Icons.search, "Ver detalle", kPrimaryDarkColor, oProducto),
               ],
             )
           ],
@@ -169,24 +202,25 @@ class ListaProductoPage extends StatelessWidget {
     );
   }
 
-  _botonDetalle(IconData icono, String titulo, Color pColor) {
-    return FlatButton.icon(
-        height: 18.0,
-        padding: EdgeInsets.zero,
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        color: pColor.withOpacity(0.2),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
-            side: BorderSide(color: pColor)),
-        onPressed: () {},
-        icon: Icon(
-          icono,
-          size: 14.0,
-          color: pColor,
-        ),
-        label: Text(
-          titulo,
-          style: TextStyle(fontSize: 11.0, color: pColor),
-        ));
+  _botonDetalle(
+      IconData icono, String titulo, Color pColor, Producto pProducto) {
+    return ElevatedButton.icon(
+      onPressed: () {},
+      icon: Icon(
+        icono,
+        size: 14.0,
+        color: Colors.white,
+      ),
+      label: Text(
+        titulo,
+        style: TextStyle(fontSize: 11.0, color: Colors.white),
+      ),
+      style: ElevatedButton.styleFrom(
+          primary: pColor.withAlpha(200),
+          minimumSize: Size(90.0, 25.0),
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0))),
+    );
   }
 }

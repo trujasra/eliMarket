@@ -50,7 +50,7 @@ class Producto {
     descProducto = map["desc_producto"];
     precio = map["precio"];
     observacion = map["observacion"];
-    lugarCompra = map["lugarCompra"];
+    lugarCompra = map["lugar_compra"];
     imagen = map["imagen"];
     estadoRegistro = map["estado_registro"] == 0 ? false : true;
     usuarioRegistro = map["usuario_registro"];
