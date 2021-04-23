@@ -299,7 +299,7 @@ class DataBaseHelper {
         DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
 
     String vSql =
-        "UPDATE SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = $vUsuarioModificacion, $FECHA_MODIFICACION = $vFechaModificacion  FROM $TABLA_CATEGORIA WHERE $ID_CATEGORIA = $idCategoria";
+        "UPDATE $TABLA_CATEGORIA SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = '$vUsuarioModificacion', $FECHA_MODIFICACION = '$vFechaModificacion' WHERE $ID_CATEGORIA = $idCategoria";
     var resultado = await dbClient.rawUpdate(vSql);
     return resultado;
   }
@@ -371,7 +371,7 @@ class DataBaseHelper {
         DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
 
     String vSql =
-        "UPDATE SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = $vUsuarioModificacion, $FECHA_MODIFICACION = $vFechaModificacion FROM $TABLA_TIPO_CATEGORIA WHERE $ID_TIPO_CATEGORIA = $idTipoCategoria";
+        "UPDATE $TABLA_TIPO_CATEGORIA SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = '$vUsuarioModificacion', $FECHA_MODIFICACION = '$vFechaModificacion' WHERE $ID_TIPO_CATEGORIA = $idTipoCategoria";
     var resultado = await dbClient.rawUpdate(vSql);
     return resultado;
   }
@@ -453,7 +453,7 @@ class DataBaseHelper {
         DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
 
     String vSql =
-        "UPDATE SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = $vUsuarioModificacion, $FECHA_MODIFICACION = $vFechaModificacion FROM $TABLA_PRODUCTO WHERE $ID_PRODUCTO = $idProducto";
+        "UPDATE $TABLA_PRODUCTO SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = '$vUsuarioModificacion', $FECHA_MODIFICACION = '$vFechaModificacion'  WHERE $ID_PRODUCTO = $idProducto";
     var resultado = await dbClient.rawUpdate(vSql);
     return resultado;
   }
@@ -541,7 +541,7 @@ class DataBaseHelper {
         DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
 
     String vSql =
-        "UPDATE SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = $vUsuarioModificacion, $FECHA_MODIFICACION = $vFechaModificacion FROM $TABLA_PRODUCTO_BITACORA WHERE $ID_PRODUCTO_BITACORA = $idProductoBitacora";
+        "UPDATE $TABLA_PRODUCTO_BITACORA SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = '$vUsuarioModificacion', $FECHA_MODIFICACION = '$vFechaModificacion' WHERE $ID_PRODUCTO_BITACORA = $idProductoBitacora";
     var resultado = await dbClient.rawUpdate(vSql);
     return resultado;
   }

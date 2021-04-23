@@ -90,11 +90,11 @@ class ListaProductoPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int i) {
           Producto oProducto = listProducto[i];
           // print(snapshot.data);
-          return itemProducto(oProducto);
+          return itemProducto(context, oProducto);
         });
   }
 
-  Widget itemProducto(Producto oProducto) {
+  Widget itemProducto(BuildContext context, Producto oProducto) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -204,11 +204,12 @@ class ListaProductoPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                _botonDetalle(context, Icons.delete, "Eliminar",
+                    Colors.redAccent, oProducto),
                 _botonDetalle(
-                    Icons.delete, "Eliminar", Colors.redAccent, oProducto),
-                _botonDetalle(Icons.edit, "Modificar", Colors.green, oProducto),
-                _botonDetalle(
-                    Icons.search, "Ver detalle", kPrimaryDarkColor, oProducto),
+                    context, Icons.edit, "Modificar", Colors.green, oProducto),
+                _botonDetalle(context, Icons.search, "Ver detalle",
+                    kPrimaryDarkColor, oProducto),
               ],
             )
           ],
@@ -217,10 +218,21 @@ class ListaProductoPage extends StatelessWidget {
     );
   }
 
-  _botonDetalle(
-      IconData icono, String titulo, Color pColor, Producto pProducto) {
+  _botonDetalle(BuildContext context, IconData icono, String titulo,
+      Color pColor, Producto pProducto) {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: () {
+        switch (titulo) {
+          case "Eliminar":
+            _modalEliminarProducto(context, pProducto);
+            break;
+          case "Modificar":
+            break;
+          case "Ver detalle":
+            break;
+          default:
+        }
+      },
       icon: Icon(
         icono,
         size: 14.0,
@@ -237,5 +249,66 @@ class ListaProductoPage extends StatelessWidget {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0))),
     );
+  }
+
+  Future<void> _modalEliminarProducto(
+      BuildContext context, Producto producto) async {
+    return await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Información"),
+            content: Text(
+                "Desea eliminar ${producto.descProducto.toUpperCase()} de la lista?"),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  // Envia para eliminar
+                  eliminarRegistroProducto(context, producto);
+                },
+                child: Text(
+                  'SI',
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.green[50],
+                    side: BorderSide(
+                      color: Colors.green,
+                    )),
+              ),
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'CANCELAR',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.red[50],
+                    side: BorderSide(color: Colors.redAccent)),
+              ),
+            ],
+          );
+        });
+  }
+
+  //Metodo para eliminar la informacion del producto
+  void eliminarRegistroProducto(BuildContext context, Producto producto) {
+    // Se envia para eliminar el producto
+    DataBaseHelper.db.eliminaProducto(producto.idProducto);
+    // Envia un mensaje
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: kColorTarjeta,
+      content: Text(
+        'Se elimino ${producto.descProducto.toUpperCase()} correctamente.',
+        style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
+      ),
+    ));
   }
 }
