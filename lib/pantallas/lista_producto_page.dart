@@ -310,5 +310,11 @@ class ListaProductoPage extends StatelessWidget {
         style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
       ),
     ));
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                ListaProductoPage(oCategoria: oCategoria)));
   }
 }
