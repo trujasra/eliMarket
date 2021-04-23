@@ -60,207 +60,218 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white, //kPrimaryColor
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                color: kIconoInactivo.withAlpha(40),
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0))),
-            width: MediaQuery.of(context).size.width,
-            height: 75.0, //90.0,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 10.0,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Para el registro de una nueva categoria debe de llenar todos los campos solicitados y cargar la imagen.",
-                      style: GoogleFonts.montserratAlternates(
-                          color: kTextoDarkColor, fontSize: 14.0), //
-                    ),
-                  ),
-                  // Padding(
-                  //   padding: EdgeInsets.only(top: 9.0, left: 18.0, right: 18.0),
-                  //   child: Text(
-                  //     "* Si no existe en la lista el tipo categoria, debe de hacer click en (+ TIPO CAT) para agregar uno nuevo.",
-                  //     style: GoogleFonts.montserratAlternates(
-                  //         color: kTextoColor, fontSize: 12.0),
-                  //   ),
-                  // ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKeyCategoria,
+    return WillPopScope(
+      onWillPop: () {
+        _retornaMenu(context);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white, //kPrimaryColor
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  color: kIconoInactivo.withAlpha(40),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0))),
+              width: MediaQuery.of(context).size.width,
+              height: 75.0, //90.0,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 10.0,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Expanded(
-                    //       child: Padding(
-                    //         padding: EdgeInsets.only(
-                    //           left: 20.0,
-                    //           right: 2.0,
-                    //           top: 20.0,
-                    //         ),
-                    //         child: DropdownButtonFormField(
-                    //           validator: (valor) {
-                    //             if (valor == null) {
-                    //               return "Seleccione tipo categoria";
-                    //             }
-                    //             return null;
-                    //           },
-                    //           decoration: new InputDecoration(
-                    //             labelText: "Tipo categoria",
-                    //             // hintText: 'Ingrese tipo categoria',
-                    //             labelStyle: textStyle,
-                    //             enabledBorder: inputBorderTexto,
-                    //             focusedBorder: inputBorderTexto,
-                    //             errorBorder: inputBorderTexto,
-                    //             focusedErrorBorder: inputBorderTexto,
-                    //           ),
-                    //           isExpanded: true,
-                    //           // itemHeight: 50.0,
-                    //           style: textStyle,
-                    //           value: vIdTipoCategoria,
-                    //           items: lista,
-                    //           onChanged: (valor) {
-                    //             FocusScope.of(context)
-                    //                 .requestFocus(new FocusNode());
-                    //             // print(valor);
-                    //             setState(() {
-                    //               vIdTipoCategoria = valor;
-                    //             });
-                    //           },
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     registrarNuevoTipoCategoria(context),
-                    //   ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Para el registro de una nueva categoria debe de llenar todos los campos solicitados y cargar la imagen.",
+                        style: GoogleFonts.montserratAlternates(
+                            color: kTextoDarkColor, fontSize: 14.0), //
+                      ),
+                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(top: 9.0, left: 18.0, right: 18.0),
+                    //   child: Text(
+                    //     "* Si no existe en la lista el tipo categoria, debe de hacer click en (+ TIPO CAT) para agregar uno nuevo.",
+                    //     style: GoogleFonts.montserratAlternates(
+                    //         color: kTextoColor, fontSize: 12.0),
+                    //   ),
                     // ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 20.0,
-                        right: 20.0,
-                        top: 20.0,
-                      ),
-                      child: TextFormField(
-                        validator: (valor) {
-                          if (valor.isEmpty) {
-                            return 'Ingrese el nombre de la categoria';
-                          }
-                          return null;
-                        },
-                        maxLength: 40,
-                        controller: descripcionController,
-                        decoration: InputDecoration(
-                          labelText: 'Nombre categoria',
-                          // hintText: 'Ingrese la categoria',
-                          labelStyle: textStyle,
-                          enabledBorder: inputBorderTexto,
-                          focusedBorder: inputBorderTexto,
-                          errorBorder: inputBorderTexto,
-                          focusedErrorBorder: inputBorderTexto,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0),
-                      child: TextFormField(
-                        validator: (valor) {
-                          if (valor.isEmpty) {
-                            return "Ingrese descripción/observación";
-                          }
-                          return null;
-                        },
-                        maxLines: 2,
-                        controller: observacionController,
-                        decoration: InputDecoration(
-                          labelText: 'Descripción/Observación',
-                          // hintText: 'Ingrese la observación',
-                          labelStyle: textStyle,
-                          enabledBorder: inputBorderTexto,
-                          focusedBorder: inputBorderTexto,
-                          errorBorder: inputBorderTexto,
-                          focusedErrorBorder: inputBorderTexto,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 20.0, top: 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          CircleAvatar(
-                            foregroundColor: Colors.red,
-                            backgroundImage: _imagenCategoria != null
-                                ? FileImage(File(_imagenCategoria.path))
-                                : AssetImage(
-                                    "assets/imagenes/categoria_ninguno.png"),
-                          ),
-                          SizedBox(
-                            width: 25.0,
-                          ),
-                          ElevatedButton.icon(
-                            label: Text("Cargar imagen"),
-                            icon: SvgPicture.asset(
-                              "assets/icons/upload-file.svg",
-                              color: kTextoLigthColor,
-                              height: 25.0,
-                            ),
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (builder) =>
-                                      seleccionArchivo(context));
-
-                              // Seleccion de Galeria
-                              //getImagenArchivo(ImageSource.gallery);
-                              //
-                              // Seleccion de Camara
-                              //getImagenArchivo(ImageSource.camera);
-                            },
-                            style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 15.0),
-                                elevation: 5.0,
-                                primary: kIconoInactivoLigth,
-                                // padding: EdgeInsets.symmetric(horizontal: 30.0),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0))),
-                          )
-                        ],
-                      ),
-                    ),
-
-                    registrarNuevaCategoria(context),
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKeyCategoria,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Expanded(
+                      //       child: Padding(
+                      //         padding: EdgeInsets.only(
+                      //           left: 20.0,
+                      //           right: 2.0,
+                      //           top: 20.0,
+                      //         ),
+                      //         child: DropdownButtonFormField(
+                      //           validator: (valor) {
+                      //             if (valor == null) {
+                      //               return "Seleccione tipo categoria";
+                      //             }
+                      //             return null;
+                      //           },
+                      //           decoration: new InputDecoration(
+                      //             labelText: "Tipo categoria",
+                      //             // hintText: 'Ingrese tipo categoria',
+                      //             labelStyle: textStyle,
+                      //             enabledBorder: inputBorderTexto,
+                      //             focusedBorder: inputBorderTexto,
+                      //             errorBorder: inputBorderTexto,
+                      //             focusedErrorBorder: inputBorderTexto,
+                      //           ),
+                      //           isExpanded: true,
+                      //           // itemHeight: 50.0,
+                      //           style: textStyle,
+                      //           value: vIdTipoCategoria,
+                      //           items: lista,
+                      //           onChanged: (valor) {
+                      //             FocusScope.of(context)
+                      //                 .requestFocus(new FocusNode());
+                      //             // print(valor);
+                      //             setState(() {
+                      //               vIdTipoCategoria = valor;
+                      //             });
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     registrarNuevoTipoCategoria(context),
+                      //   ],
+                      // ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 20.0,
+                          right: 20.0,
+                          top: 20.0,
+                        ),
+                        child: TextFormField(
+                          validator: (valor) {
+                            if (valor.isEmpty) {
+                              return 'Ingrese el nombre de la categoria';
+                            }
+                            return null;
+                          },
+                          maxLength: 40,
+                          controller: descripcionController,
+                          decoration: InputDecoration(
+                            labelText: 'Nombre categoria',
+                            // hintText: 'Ingrese la categoria',
+                            labelStyle: textStyle,
+                            enabledBorder: inputBorderTexto,
+                            focusedBorder: inputBorderTexto,
+                            errorBorder: inputBorderTexto,
+                            focusedErrorBorder: inputBorderTexto,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 7.0),
+                        child: TextFormField(
+                          validator: (valor) {
+                            if (valor.isEmpty) {
+                              return "Ingrese descripción/observación";
+                            }
+                            return null;
+                          },
+                          maxLines: 2,
+                          controller: observacionController,
+                          decoration: InputDecoration(
+                            labelText: 'Descripción/Observación',
+                            // hintText: 'Ingrese la observación',
+                            labelStyle: textStyle,
+                            enabledBorder: inputBorderTexto,
+                            focusedBorder: inputBorderTexto,
+                            errorBorder: inputBorderTexto,
+                            focusedErrorBorder: inputBorderTexto,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.0, top: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              foregroundColor: Colors.red,
+                              backgroundImage: _imagenCategoria != null
+                                  ? FileImage(File(_imagenCategoria.path))
+                                  : AssetImage(
+                                      "assets/imagenes/categoria_ninguno.png"),
+                            ),
+                            SizedBox(
+                              width: 25.0,
+                            ),
+                            ElevatedButton.icon(
+                              label: Text("Cargar imagen"),
+                              icon: SvgPicture.asset(
+                                "assets/icons/upload-file.svg",
+                                color: kTextoLigthColor,
+                                height: 25.0,
+                              ),
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (builder) =>
+                                        seleccionArchivo(context));
+
+                                // Seleccion de Galeria
+                                //getImagenArchivo(ImageSource.gallery);
+                                //
+                                // Seleccion de Camara
+                                //getImagenArchivo(ImageSource.camera);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 15.0),
+                                  elevation: 5.0,
+                                  primary: kIconoInactivoLigth,
+                                  // padding: EdgeInsets.symmetric(horizontal: 30.0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0))),
+                            )
+                          ],
+                        ),
+                      ),
+
+                      registrarNuevaCategoria(context),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
+  void _retornaMenu(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MenuPage()));
+  }
   // DropdownMenuItem<String> obtieneDropDownWiget(
   //     ParTipoCategoria tipoCategoria) {
   //   return DropdownMenuItem<String>(

@@ -43,57 +43,84 @@ class _RegistroProductoPageState extends State<RegistroProductoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: kPrimaryColor,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: SvgPicture.asset("assets/icons/back.svg",
-              color: kTextoLigthColor),
+    return WillPopScope(
+      onWillPop: () {
+        _retornarListaProducto(context);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () =>
+                _retornarListaProducto(context), //Navigator.pop(context),
+            icon: SvgPicture.asset("assets/icons/back.svg",
+                color: kTextoLigthColor),
+          ),
+          title: Text(widget.oCategoria.descCategoria,
+              style: GoogleFonts.berkshireSwash(
+                color: kTextoLigthColor,
+              )),
         ),
-        title: Text("Nuevo Producto",
-            style: GoogleFonts.berkshireSwash(
-              color: kTextoLigthColor,
-            )),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                color: kIconoInactivo.withAlpha(40),
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0))),
-            width: MediaQuery.of(context).size.width,
-            height: 75.0, //90.0,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 10.0,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Para el registro de un nuevo producto debe de llenar todos los campos solicitados y cargar la imagen.",
-                      style: GoogleFonts.montserratAlternates(
-                          color: kTextoDarkColor, fontSize: 14.0),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  color: kIconoInactivo.withAlpha(40),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0))),
+              width: MediaQuery.of(context).size.width,
+              height: 110.0, //90.0,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 10.0,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.0, left: 8.0),
+                      child: Text(
+                        "NUEVO REGISTRO",
+                        style: TextStyle(
+                            color: kPrimaryColor,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "Para el registro de un nuevo producto debe de llenar todos los campos solicitados y cargar la imagen.",
+                        style: GoogleFonts.montserratAlternates(
+                            color: kTextoDarkColor, fontSize: 14.0),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Expanded(child: _disenioProducto(context)),
-        ],
+            Expanded(child: _disenioProducto(context)),
+          ],
+        ),
       ),
     );
+  }
+
+  void _retornarListaProducto(BuildContext context) {
+    //Navigator.of(context).pop();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ListaProductoPage(
+                  oCategoria: widget.oCategoria,
+                )));
   }
 
   Widget _disenioProducto(BuildContext context) {
@@ -251,42 +278,45 @@ class _RegistroProductoPageState extends State<RegistroProductoPage> {
                 context: context,
                 barrierDismissible: false,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text("Información"),
-                    content: Text("Desea registrar el nuevo producto?"),
-                    actions: [
-                      OutlinedButton(
-                        onPressed: () {
-                          // Envia para guardar
-                          guardarRegistroProducto(context);
-                        },
-                        child: Text(
-                          'SI',
-                          style: TextStyle(
-                            color: Colors.green,
-                          ),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.green[50],
-                            side: BorderSide(
+                  return WillPopScope(
+                    onWillPop: () async => true,
+                    child: AlertDialog(
+                      title: Text("Información"),
+                      content: Text("Desea registrar el nuevo producto?"),
+                      actions: [
+                        OutlinedButton(
+                          onPressed: () {
+                            // Envia para guardar
+                            guardarRegistroProducto(context);
+                          },
+                          child: Text(
+                            'SI',
+                            style: TextStyle(
                               color: Colors.green,
-                            )),
-                      ),
-                      OutlinedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                          'CANCELAR',
-                          style: TextStyle(
-                            color: Colors.red,
+                            ),
                           ),
+                          style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.green[50],
+                              side: BorderSide(
+                                color: Colors.green,
+                              )),
                         ),
-                        style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.red[50],
-                            side: BorderSide(color: Colors.redAccent)),
-                      ),
-                    ],
+                        OutlinedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'CANCELAR',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.red[50],
+                              side: BorderSide(color: Colors.redAccent)),
+                        ),
+                      ],
+                    ),
                   );
                 });
           }

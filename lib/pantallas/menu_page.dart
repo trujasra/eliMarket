@@ -1,3 +1,4 @@
+import 'package:eli_market/pantallas/bienvenida_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'dart:io';
@@ -38,66 +39,78 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: kPrimaryColor,
-        elevation: 0,
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/icons/back.svg",
-              color: kTextoLigthColor),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        // actions: [
-        //   IconButton(
-        //     icon: SvgPicture.asset(
-        //       "assets/icons/search.svg",
-        //       color: kIconPrimaryColor,
-        //     ),
-        //     onPressed: () {},
-        //   ),
-        //   IconButton(
-        //       icon: SvgPicture.asset(
-        //         "assets/icons/cart.svg",
-        //         color: kIconPrimaryColor,
-        //       ),
-        //       onPressed: () {}),
-        //   SizedBox(
-        //     width: 10.0,
-        //   ),
-        // ],
-        title: Text(
-          "Categorias",
-          style: GoogleFonts.berkshireSwash(
-            color: kTextoLigthColor,
-          ),
-          // TextStyle(color: kTextoLigthColor, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
-      body: _paginas[_seleccionPaginaIndex]['pagina'],
-      floatingActionButton: FloatingActionButton(
-        foregroundColor: kIconoInactivoLigth,
+    return WillPopScope(
+      onWillPop: () {
+        _rotarnaBienvenida(context);
+        return Future.value(false);
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        shape: CircleBorder(
-          side: BorderSide(width: 5.0, color: kIconoInactivoLigth),
+        appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          elevation: 0,
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/icons/back.svg",
+                color: kTextoLigthColor),
+            onPressed: () {
+              //Navigator.pop(context);
+              _rotarnaBienvenida(context);
+            },
+          ),
+          // actions: [
+          //   IconButton(
+          //     icon: SvgPicture.asset(
+          //       "assets/icons/search.svg",
+          //       color: kIconPrimaryColor,
+          //     ),
+          //     onPressed: () {},
+          //   ),
+          //   IconButton(
+          //       icon: SvgPicture.asset(
+          //         "assets/icons/cart.svg",
+          //         color: kIconPrimaryColor,
+          //       ),
+          //       onPressed: () {}),
+          //   SizedBox(
+          //     width: 10.0,
+          //   ),
+          // ],
+          title: Text(
+            "Categorias",
+            style: GoogleFonts.berkshireSwash(
+              color: kTextoLigthColor,
+            ),
+            // TextStyle(color: kTextoLigthColor, fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
         ),
-        onPressed: () {
-          setState(() {});
-          // Navigator.pushNamed(context, '/RegistroCategoria');
-          _seleccionPaginaIndex = 3;
-          _seleccionPagina(_seleccionPaginaIndex);
-        },
-        child: Icon(
-          Icons.post_add_rounded,
-          size: 30.0,
+        body: _paginas[_seleccionPaginaIndex]['pagina'],
+        floatingActionButton: FloatingActionButton(
+          foregroundColor: kIconoInactivoLigth,
+          backgroundColor: Colors.white,
+          shape: CircleBorder(
+            side: BorderSide(width: 5.0, color: kIconoInactivoLigth),
+          ),
+          onPressed: () {
+            setState(() {});
+            // Navigator.pushNamed(context, '/RegistroCategoria');
+            _seleccionPaginaIndex = 3;
+            _seleccionPagina(_seleccionPaginaIndex);
+          },
+          child: Icon(
+            Icons.post_add_rounded,
+            size: 30.0,
+          ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: _menuAbajo(context),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _menuAbajo(context),
     );
+  }
+
+  void _rotarnaBienvenida(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => BienvenidaPage()));
   }
 
   Widget _menuAbajo(BuildContext context) {

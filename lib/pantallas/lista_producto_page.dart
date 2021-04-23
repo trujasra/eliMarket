@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:eli_market/models/producto.dart';
+import 'package:eli_market/pantallas/menu_page.dart';
 import 'package:eli_market/pantallas/registro_producto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,56 +18,70 @@ class ListaProductoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kPrimaryColor,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: SvgPicture.asset("assets/icons/back.svg",
-              color: kTextoLigthColor),
-        ),
-        actions: [
-          IconButton(
-              icon: SvgPicture.asset(
-                "assets/icons/search.svg",
+    return WillPopScope(
+      onWillPop: () {
+        _retornaMenu(context);
+        // Retorna un futuro para volver atras
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () => _retornaMenu(context),
+            icon: SvgPicture.asset("assets/icons/back.svg",
+                color: kTextoLigthColor),
+          ),
+          actions: [
+            IconButton(
+                icon: SvgPicture.asset(
+                  "assets/icons/search.svg",
+                  color: kTextoLigthColor,
+                ),
+                onPressed: () {}),
+            IconButton(
+                icon: SvgPicture.asset("assets/icons/shopping-cart-1.svg",
+                    color: kTextoLigthColor),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RegistroProductoPage(
+                                oCategoria: oCategoria,
+                              )));
+                }),
+          ],
+          title: Text(oCategoria.descCategoria,
+              style: GoogleFonts.berkshireSwash(
                 color: kTextoLigthColor,
-              ),
-              onPressed: () {}),
-          IconButton(
-              icon: SvgPicture.asset("assets/icons/shopping-cart-1.svg",
-                  color: kTextoLigthColor),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => RegistroProductoPage(
-                              oCategoria: oCategoria,
-                            )));
-              }),
-        ],
-        title: Text(oCategoria.descCategoria,
-            style: GoogleFonts.berkshireSwash(
-              color: kTextoLigthColor,
-            )),
-      ),
-      body: FutureBuilder(
-        future: DataBaseHelper.db
-            .obtieneProductoPorIdCategoria(oCategoria.idCategoria),
-        // initialData: InitialData,
-        builder:
-            (BuildContext context, AsyncSnapshot<List<Producto>> snapshot) {
-          //print(snapshot.connectionState);
-          // Verifica si esta esperando la data
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            // retorna un lista de item.
-            return _listaProductos(snapshot.data);
-          }
-        },
+              )),
+        ),
+        body: FutureBuilder(
+          future: DataBaseHelper.db
+              .obtieneProductoPorIdCategoria(oCategoria.idCategoria),
+          // initialData: InitialData,
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Producto>> snapshot) {
+            //print(snapshot.connectionState);
+            // Verifica si esta esperando la data
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              // retorna un lista de item.
+              return _listaProductos(snapshot.data);
+            }
+          },
+        ),
       ),
     );
+  }
+
+  void _retornaMenu(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MenuPage())); //Navigator.pop(context),
   }
 
   Widget _listaProductos(List<Producto> listProducto) {
