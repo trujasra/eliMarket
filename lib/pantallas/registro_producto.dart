@@ -113,16 +113,6 @@ class _RegistroProductoPageState extends State<RegistroProductoPage> {
     );
   }
 
-  void _retornarListaProducto(BuildContext context) {
-    //Navigator.of(context).pop();
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ListaProductoPage(
-                  oCategoria: widget.oCategoria,
-                )));
-  }
-
   Widget _disenioProducto(BuildContext context) {
     return SingleChildScrollView(
       child: Form(
@@ -144,6 +134,7 @@ class _RegistroProductoPageState extends State<RegistroProductoPage> {
                   return null;
                 },
                 maxLength: 40,
+                textCapitalization: TextCapitalization.sentences,
                 controller: nombreProductoController,
                 decoration: InputDecoration(
                   labelText: 'Nombre producto',
@@ -164,10 +155,34 @@ class _RegistroProductoPageState extends State<RegistroProductoPage> {
                   }
                   return null;
                 },
+                textCapitalization: TextCapitalization.sentences,
                 maxLines: 2,
                 controller: observacionController,
                 decoration: InputDecoration(
                   labelText: 'Descripción/Observación',
+                  labelStyle: textStyle,
+                  enabledBorder: inputBorderTexto,
+                  focusedBorder: inputBorderTexto,
+                  errorBorder: inputBorderTexto,
+                  focusedErrorBorder: inputBorderTexto,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
+              child: TextFormField(
+                validator: (valor) {
+                  if (valor.isEmpty) {
+                    return 'Ingrese el precio del producto';
+                  }
+                  return null;
+                },
+                // maxLength: 40,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                controller: precioController,
+                decoration: InputDecoration(
+                  labelText: 'Precio producto',
                   labelStyle: textStyle,
                   enabledBorder: inputBorderTexto,
                   focusedBorder: inputBorderTexto,
@@ -185,35 +200,11 @@ class _RegistroProductoPageState extends State<RegistroProductoPage> {
                 //   }
                 //   return null;
                 // },
+                textCapitalization: TextCapitalization.sentences,
                 maxLines: 2,
                 controller: lugarCompraController,
                 decoration: InputDecoration(
                   labelText: 'Lugar/Dirección de compra',
-                  labelStyle: textStyle,
-                  enabledBorder: inputBorderTexto,
-                  focusedBorder: inputBorderTexto,
-                  errorBorder: inputBorderTexto,
-                  focusedErrorBorder: inputBorderTexto,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 20.0,
-                right: 20.0,
-                top: 10.0,
-              ),
-              child: TextFormField(
-                validator: (valor) {
-                  if (valor.isEmpty) {
-                    return 'Ingrese el precio del producto';
-                  }
-                  return null;
-                },
-                maxLength: 40,
-                controller: precioController,
-                decoration: InputDecoration(
-                  labelText: 'Precio producto',
                   labelStyle: textStyle,
                   enabledBorder: inputBorderTexto,
                   focusedBorder: inputBorderTexto,
@@ -231,7 +222,7 @@ class _RegistroProductoPageState extends State<RegistroProductoPage> {
                     foregroundColor: Colors.red,
                     backgroundImage: _imagenProducto != null
                         ? FileImage(File(_imagenProducto.path))
-                        : AssetImage("assets/imagenes/categoria_ninguno.png"),
+                        : AssetImage("assets/imagenes/producto_ninguno.png"),
                   ),
                   SizedBox(
                     width: 25.0,
@@ -266,12 +257,23 @@ class _RegistroProductoPageState extends State<RegistroProductoPage> {
     );
   }
 
+  void _retornarListaProducto(BuildContext context) {
+    //Navigator.of(context).pop();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ListaProductoPage(
+                  oCategoria: widget.oCategoria,
+                )));
+  }
+
   Widget registrarNuevoProducto(BuildContext context) {
     return Container(
       margin: new EdgeInsets.only(top: 40.0),
       width: MediaQuery.of(context).size.width * 0.90,
       child: ElevatedButton(
         onPressed: () {
+          FocusScope.of(context).unfocus();
           // verifica si la informacion esta validada.
           if (_formKeyProducto.currentState.validate()) {
             showDialog(
@@ -343,7 +345,7 @@ class _RegistroProductoPageState extends State<RegistroProductoPage> {
             height: 10.0,
           ),
           Text(
-            "Elige como cargar la imagen de: ",
+            "Elige como cargar la imagen: ",
             style: TextStyle(fontSize: 16.0),
           ),
           SizedBox(
@@ -363,7 +365,7 @@ class _RegistroProductoPageState extends State<RegistroProductoPage> {
                   color: kPrimaryDarkColor,
                 ),
                 label: Text(
-                  "Camara",
+                  "Tomar foto",
                   style: TextStyle(color: kPrimaryDarkColor),
                 ),
                 style: OutlinedButton.styleFrom(
@@ -433,7 +435,11 @@ class _RegistroProductoPageState extends State<RegistroProductoPage> {
     DataBaseHelper.db.registraProducto(producto);
     // Envia un mensaje
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Se registro correctamente.'),
+      backgroundColor: kColorTarjeta,
+      content: Text(
+        'Se registro correctamente.',
+        style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
+      ),
     ));
 
     // Navigator.pop(context);

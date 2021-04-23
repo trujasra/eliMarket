@@ -101,7 +101,7 @@ class ListaProductoPage extends StatelessWidget {
         padding:
             EdgeInsets.only(top: 12.0, bottom: 0.0, left: 10.0, right: 10.0),
         decoration: BoxDecoration(
-          color: Color.fromRGBO(255, 233, 219, 1),
+          color: kColorTarjeta,
           borderRadius: BorderRadius.circular(18.0),
         ),
         child: Column(
@@ -117,7 +117,7 @@ class ListaProductoPage extends StatelessWidget {
                     // borderRadius: BorderRadius.circular(36.0),
                     child: oProducto.imagen == null || oProducto.imagen.isEmpty
                         ? Image.asset(
-                            "assets/imagenes/categoria_ninguno.png",
+                            "assets/imagenes/producto_ninguno.png",
                             width: 100.0,
                           )
                         : oProducto.imagen.contains('assets/im')

@@ -172,6 +172,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                             }
                             return null;
                           },
+                          textCapitalization: TextCapitalization.sentences,
                           maxLength: 40,
                           controller: descripcionController,
                           decoration: InputDecoration(
@@ -195,6 +196,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                             }
                             return null;
                           },
+                          textCapitalization: TextCapitalization.sentences,
                           maxLines: 2,
                           controller: observacionController,
                           decoration: InputDecoration(
@@ -286,6 +288,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
       width: MediaQuery.of(context).size.width * 0.90,
       child: ElevatedButton(
         onPressed: () {
+          FocusScope.of(context).unfocus();
           // verifica si la informacion esta validada.
           if (_formKeyCategoria.currentState.validate()) {
             showDialog(
@@ -455,7 +458,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
             height: 10.0,
           ),
           Text(
-            "Elige como cargar la imagen de: ",
+            "Elige como cargar la imagen: ",
             style: TextStyle(fontSize: 16.0),
           ),
           SizedBox(
@@ -475,7 +478,7 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
                   color: kPrimaryDarkColor,
                 ),
                 label: Text(
-                  "Camara",
+                  "Tomar foto",
                   style: TextStyle(color: kPrimaryDarkColor),
                 ),
                 style: OutlinedButton.styleFrom(
@@ -544,7 +547,11 @@ class _RegistroCategoriaPageState extends State<RegistroCategoriaPage> {
     DataBaseHelper.db.registraCategoria(categoria);
     // Envia un mensaje
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Se registro correctamente.'),
+      backgroundColor: kColorTarjeta,
+      content: Text(
+        'Se registro correctamente.',
+        style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
+      ),
     ));
 
     Navigator.push(context,
