@@ -13,7 +13,7 @@ import 'package:eli_market/constantes.dart';
 import 'package:eli_market/data/database_helper.dart';
 import 'package:eli_market/models/categoria.dart';
 
-//import 'lista_categoria.dart';
+//import 'lista_categoria_page.dart';
 
 class RegistroCategoriaPage extends StatefulWidget {
   @override

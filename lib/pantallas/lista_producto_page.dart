@@ -1,8 +1,5 @@
 import 'dart:io';
 
-import 'package:eli_market/models/producto.dart';
-import 'package:eli_market/pantallas/menu_page.dart';
-import 'package:eli_market/pantallas/registro_producto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +7,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constantes.dart';
 import 'package:eli_market/data/database_helper.dart';
 import 'package:eli_market/models/categoria.dart';
+import 'package:eli_market/models/producto.dart';
+import 'package:eli_market/pantallas/menu_page.dart';
+import 'package:eli_market/pantallas/registro_producto_page.dart';
+import 'package:eli_market/pantallas/modificacion_producto_page.dart';
 
 class ListaProductoPage extends StatelessWidget {
   //final String miProducto;
@@ -227,6 +228,13 @@ class ListaProductoPage extends StatelessWidget {
             _modalEliminarProducto(context, pProducto);
             break;
           case "Modificar":
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ModificacionProductoPage(
+                          oCategoria: oCategoria,
+                          oProducto: pProducto,
+                        )));
             break;
           case "Ver detalle":
             break;

@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:eli_market/pantallas/lista_categoria.dart';
-import 'package:eli_market/pantallas/registro_categoria.dart';
+import 'package:eli_market/pantallas/lista_categoria_page.dart';
+import 'package:eli_market/pantallas/registro_categoria_page.dart';
 import 'package:eli_market/pantallas/credito_menu_page.dart';
 
 import '../constantes.dart';
