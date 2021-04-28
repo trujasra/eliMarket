@@ -472,6 +472,9 @@ class _ModificacionProductoPageState extends State<ModificacionProductoPage> {
     producto.lugarCompra = lugarCompraController.text.trim();
 
     producto.imagen = _imagenProducto != null ? _imagenProducto.path : null;
+    producto.estadoRegistro = widget.oProducto.estadoRegistro;
+    producto.usuarioRegistro = widget.oProducto.usuarioRegistro;
+    producto.fechaRegistro = widget.oProducto.fechaRegistro;
 
     // Envia para modificar la informacion.
     DataBaseHelper.db.actualizaProducto(producto);

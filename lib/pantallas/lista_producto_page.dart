@@ -11,6 +11,7 @@ import 'package:eli_market/models/producto.dart';
 import 'package:eli_market/pantallas/menu_page.dart';
 import 'package:eli_market/pantallas/registro_producto_page.dart';
 import 'package:eli_market/pantallas/modificacion_producto_page.dart';
+import 'package:eli_market/pantallas/detalle_producto_page.dart';
 
 class ListaProductoPage extends StatelessWidget {
   //final String miProducto;
@@ -159,7 +160,9 @@ class ListaProductoPage extends StatelessWidget {
                             fontSize: 15, color: kTextoDarkColor, height: 1.5),
                       ),
                       Text(
-                        "Lugar : ${oProducto.lugarCompra}",
+                        oProducto.lugarCompra != null
+                            ? "Lugar : ${oProducto.lugarCompra}"
+                            : "",
                         // overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: 14, color: kIconoInactivo, height: 1.5),
@@ -177,7 +180,7 @@ class ListaProductoPage extends StatelessWidget {
                                 height: 1.5),
                           ),
                           Text(
-                            "${oProducto.precio} Bs.",
+                            " Bs. ${oProducto.precio}",
                             // overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 20,
@@ -237,6 +240,13 @@ class ListaProductoPage extends StatelessWidget {
                         )));
             break;
           case "Ver detalle":
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetalleProductoPage(
+                          oCategoria: oCategoria,
+                          oProducto: pProducto,
+                        )));
             break;
           default:
         }
