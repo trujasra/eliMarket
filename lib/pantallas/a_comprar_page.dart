@@ -193,9 +193,13 @@ class _AComprarPageState extends State<AComprarPage> {
     ));
 
     setState(() {
+      descripcionController.text = "";
       listaProductos(context);
     });
     Navigator.of(context).pop();
+
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: (BuildContext context) => AComprarPage()));
   }
 
   Widget listaProductos(BuildContext context) {
@@ -410,8 +414,12 @@ class _AComprarPageState extends State<AComprarPage> {
     ));
 
     setState(() {
+      descripcionController.text = "";
       listaProductos(context);
     });
     Navigator.of(context).pop();
+
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: (BuildContext context) => AComprarPage()));
   }
 }
