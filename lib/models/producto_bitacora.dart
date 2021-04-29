@@ -7,6 +7,8 @@ class ProductoBitacora {
   String observacion;
   String lugarCompra;
   String imagen;
+  String usuarioRegistroProd;
+  String fechaRegistroProd;
 
   bool estadoRegistro;
   String usuarioRegistro;
@@ -23,6 +25,8 @@ class ProductoBitacora {
       this.observacion,
       this.lugarCompra,
       this.imagen,
+      this.usuarioRegistroProd,
+      this.fechaRegistroProd,
       this.estadoRegistro,
       this.usuarioRegistro,
       this.fechaRegistro,
@@ -39,6 +43,8 @@ class ProductoBitacora {
       'observacion': observacion,
       'lugar_compra': lugarCompra,
       'imagen': imagen,
+      'usuario_registro_prod': usuarioRegistroProd,
+      'fecha_registro_prod': fechaRegistroProd,
       'estado_registro': estadoRegistro,
       'usuario_registro': usuarioRegistro,
       'fecha_registro': fechaRegistro,
@@ -56,6 +62,8 @@ class ProductoBitacora {
     observacion = map["observacion"];
     lugarCompra = map["lugar_compra"];
     imagen = map["imagen"];
+    usuarioRegistroProd = map["usuario_registro_prod"];
+    fechaRegistroProd = map["fecha_registro_prod"];
     estadoRegistro = map["estado_registro"] == 0 ? false : true;
     usuarioRegistro = map["usuario_registro"];
     fechaRegistro = map["fecha_registro"];

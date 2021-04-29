@@ -459,6 +459,15 @@ class _ModificacionProductoPageState extends State<ModificacionProductoPage> {
     productoBitacora.imagen =
         _imagenProductoBitacora != null ? _imagenProductoBitacora.path : null;
 
+    productoBitacora.usuarioRegistroProd =
+        widget.oProducto.usuarioModificacion == null
+            ? widget.oProducto.usuarioRegistro
+            : widget.oProducto.usuarioModificacion;
+    productoBitacora.fechaRegistroProd =
+        widget.oProducto.fechaModificacion == null
+            ? widget.oProducto.fechaRegistro
+            : widget.oProducto.fechaModificacion;
+
     // Envia para modificar la informacion.
     DataBaseHelper.db.registraProductoBitacora(productoBitacora);
 

@@ -35,10 +35,10 @@ class DetalleProductoPage extends StatelessWidget {
             icon: SvgPicture.asset("assets/icons/back.svg",
                 color: kTextoLigthColor),
           ),
-          // title: Text(oProducto.descProducto,
-          //     style: GoogleFonts.berkshireSwash(
-          //       color: kTextoLigthColor,
-          //     )),
+          title: Text("Más detalles del producto",
+              style: GoogleFonts.berkshireSwash(
+                color: kTextoLigthColor,
+              )),
         ),
         body: _disenioDetalle(context),
       ),
@@ -91,17 +91,20 @@ class DetalleProductoPage extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.only(right: 10.0),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                oProducto.descProducto,
-                                style: GoogleFonts.montserratAlternates(
+                              Center(
+                                child: Text(
+                                  oProducto.descProducto,
+                                  style: GoogleFonts.montserratAlternates(
                                     color: kPrimaryLigthColor,
                                     fontSize: 20.0,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Divider(
-                                color: Colors.pink[200],
+                                color: kColorTarjetaOtro,
                                 height: 2.0,
                                 thickness: 1,
                               ),
@@ -110,6 +113,17 @@ class DetalleProductoPage extends StatelessWidget {
                                 style: GoogleFonts.montserratAlternates(
                                     color: kTextoLigthColor, fontSize: 16.0),
                               ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                oProducto.lugarCompra != null &&
+                                        oProducto.lugarCompra != ""
+                                    ? "Lugar : ${oProducto.lugarCompra}"
+                                    : "",
+                                style: GoogleFonts.montserratAlternates(
+                                    color: kColorTarjetaOtro, fontSize: 16.0),
+                              ),
                             ],
                           ),
                         ),
@@ -117,30 +131,39 @@ class DetalleProductoPage extends StatelessWidget {
                       Expanded(
                         child: Column(
                           children: [
-                            Container(
-                              width: 120,
-                              height: 120,
-                              decoration: BoxDecoration(
-                                  color: kColorTarjeta,
-                                  borderRadius: BorderRadius.circular(30),
-                                  image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    // colorFilter: new ColorFilter.mode(
-                                    //     Colors.black.withOpacity(0.1),
-                                    //     BlendMode.dstATop),
-                                    image: oProducto.imagen == null ||
-                                            oProducto.imagen.isEmpty
-                                        ? AssetImage(
-                                            "assets/imagenes/producto_ninguno.png",
-                                          )
-                                        : oProducto.imagen.contains('assets/im')
-                                            ? AssetImage(
-                                                oProducto.imagen,
-                                              )
-                                            : FileImage(
-                                                File(oProducto.imagen),
-                                              ),
-                                  )),
+                            GestureDetector(
+                              onTap: () async {
+                                await showDialog(
+                                    context: context,
+                                    builder: (_) => _mostrarImagen(
+                                        context, oProducto.imagen));
+                              },
+                              child: Container(
+                                width: 120,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                    color: kColorTarjeta,
+                                    borderRadius: BorderRadius.circular(30),
+                                    image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      // colorFilter: new ColorFilter.mode(
+                                      //     Colors.black.withOpacity(0.1),
+                                      //     BlendMode.dstATop),
+                                      image: oProducto.imagen == null ||
+                                              oProducto.imagen.isEmpty
+                                          ? AssetImage(
+                                              "assets/imagenes/producto_ninguno.png",
+                                            )
+                                          : oProducto.imagen
+                                                  .contains('assets/im')
+                                              ? AssetImage(
+                                                  oProducto.imagen,
+                                                )
+                                              : FileImage(
+                                                  File(oProducto.imagen),
+                                                ),
+                                    )),
+                              ),
                             ),
                             SizedBox(
                               height: 10.0,
@@ -196,7 +219,7 @@ class DetalleProductoPage extends StatelessWidget {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
                       } else {
-                        return _listaProductoBitacora(snapshot.data);
+                        return _listaProductoBitacora(snapshot.data, context);
                       }
                     }),
               ],
@@ -207,15 +230,24 @@ class DetalleProductoPage extends StatelessWidget {
     );
   }
 
-  Widget _listaProductoBitacora(List<ProductoBitacora> listaProductoBitacora) {
-    return Expanded(
-        child: ListView.builder(
-            itemCount: listaProductoBitacora.length,
-            itemBuilder: (BuildContext context, int i) {
-              ProductoBitacora oProductoBitacora = listaProductoBitacora[i];
-              // print(snapshot.data);
-              return itemProductoBitacora(context, oProductoBitacora);
-            }));
+  Widget _listaProductoBitacora(
+      List<ProductoBitacora> listaProductoBitacora, BuildContext context) {
+    return listaProductoBitacora.length > 0
+        ? Expanded(
+            child: ListView.builder(
+                itemCount: listaProductoBitacora.length,
+                itemBuilder: (BuildContext context, int i) {
+                  ProductoBitacora oProductoBitacora = listaProductoBitacora[i];
+                  // print(snapshot.data);
+                  return itemProductoBitacora(context, oProductoBitacora);
+                }))
+        : Container(
+            padding: EdgeInsets.all(20.0),
+            width: MediaQuery.of(context).size.width,
+            child: Text(
+              "No existe registros",
+              style: TextStyle(color: kPrimaryColor),
+            ));
   }
 
   Widget itemProductoBitacora(
@@ -235,31 +267,39 @@ class DetalleProductoPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 36.0,
-                  child: ClipOval(
-                    // borderRadius: BorderRadius.circular(36.0),
-                    child: oProductoBitacora.imagen == null ||
-                            oProductoBitacora.imagen.isEmpty
-                        ? Image.asset(
-                            "assets/imagenes/producto_ninguno.png",
-                            width: 100.0,
-                          )
-                        : oProductoBitacora.imagen.contains('assets/im')
-                            ? Image.asset(
-                                oProductoBitacora.imagen,
-                                width: 100.0,
-                              )
-                            : Image.file(
-                                File(oProductoBitacora.imagen),
-                                width: 100.0,
-                                height: 100.0,
-                                fit: BoxFit.cover,
-                              ),
+                GestureDetector(
+                  onTap: () async {
+                    await showDialog(
+                        context: context,
+                        builder: (_) =>
+                            _mostrarImagen(context, oProductoBitacora.imagen));
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 36.0,
+                    child: ClipOval(
+                      // borderRadius: BorderRadius.circular(36.0),
+                      child: oProductoBitacora.imagen == null ||
+                              oProductoBitacora.imagen.isEmpty
+                          ? Image.asset(
+                              "assets/imagenes/producto_ninguno.png",
+                              width: 100.0,
+                            )
+                          : oProductoBitacora.imagen.contains('assets/im')
+                              ? Image.asset(
+                                  oProductoBitacora.imagen,
+                                  width: 100.0,
+                                )
+                              : Image.file(
+                                  File(oProductoBitacora.imagen),
+                                  width: 100.0,
+                                  height: 100.0,
+                                  fit: BoxFit.cover,
+                                ),
+                    ),
+                    // backgroundImage: AssetImage(oProductoBitacora.imagen),
+                    // width: 100.0,
                   ),
-                  // backgroundImage: AssetImage(oProductoBitacora.imagen),
-                  // width: 100.0,
                 ),
                 SizedBox(
                   width: 8.0,
@@ -284,8 +324,9 @@ class DetalleProductoPage extends StatelessWidget {
                             fontSize: 15, color: kTextoDarkColor, height: 1.5),
                       ),
                       Text(
-                        oProductoBitacora.lugarCompra != null
-                            ? "Lugar : ${oProducto.lugarCompra}"
+                        oProductoBitacora.lugarCompra != null &&
+                                oProductoBitacora.lugarCompra != ""
+                            ? "Lugar : ${oProductoBitacora.lugarCompra}"
                             : "",
                         // overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -317,7 +358,7 @@ class DetalleProductoPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            "${oProductoBitacora.fechaRegistro}",
+                            "${oProductoBitacora.fechaRegistroProd}",
                             // overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 12,
@@ -333,6 +374,32 @@ class DetalleProductoPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _mostrarImagen(BuildContext context, String imagen) {
+    return Dialog(
+      child: Container(
+        height: 300,
+        // height: MediaQuery.of(context).size.height * 0.70,
+        decoration: BoxDecoration(
+            color: kColorTarjeta,
+            image: DecorationImage(
+                image: imagen == null || imagen.isEmpty
+                    ? AssetImage(
+                        "assets/imagenes/producto_ninguno.png",
+                      )
+                    : imagen.contains('assets/im')
+                        ? AssetImage(
+                            imagen,
+                          )
+                        : FileImage(
+                            File(imagen),
+                          ),
+
+                //ExactAssetImage('assets/imagenes/producto_ninguno.png'),
+                fit: BoxFit.contain)),
       ),
     );
   }

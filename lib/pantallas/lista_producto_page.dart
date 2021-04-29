@@ -87,13 +87,19 @@ class ListaProductoPage extends StatelessWidget {
   }
 
   Widget _listaProductos(List<Producto> listProducto) {
-    return ListView.builder(
-        itemCount: listProducto.length,
-        itemBuilder: (BuildContext context, int i) {
-          Producto oProducto = listProducto[i];
-          // print(snapshot.data);
-          return itemProducto(context, oProducto);
-        });
+    return listProducto.length > 0
+        ? ListView.builder(
+            itemCount: listProducto.length,
+            itemBuilder: (BuildContext context, int i) {
+              Producto oProducto = listProducto[i];
+              // print(snapshot.data);
+              return itemProducto(context, oProducto);
+            })
+        : Container(
+            padding: EdgeInsets.all(20.0),
+            child: Text(
+                "No existen productos \nPara adicionar haga clik en el carrito(+)"),
+          );
   }
 
   Widget itemProducto(BuildContext context, Producto oProducto) {
@@ -160,7 +166,8 @@ class ListaProductoPage extends StatelessWidget {
                             fontSize: 15, color: kTextoDarkColor, height: 1.5),
                       ),
                       Text(
-                        oProducto.lugarCompra != null
+                        oProducto.lugarCompra != null &&
+                                oProducto.lugarCompra != ""
                             ? "Lugar : ${oProducto.lugarCompra}"
                             : "",
                         // overflow: TextOverflow.ellipsis,
@@ -198,7 +205,7 @@ class ListaProductoPage extends StatelessWidget {
             //   height: 5.0,
             // ),
             Divider(
-              color: Colors.pink[200],
+              color: kColorTarjetaOtro,
               height: 2.0,
               thickness: 1,
             ),

@@ -1,13 +1,13 @@
-import 'package:eli_market/pantallas/bienvenida_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'dart:io';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:eli_market/pantallas/lista_categoria_page.dart';
 import 'package:eli_market/pantallas/registro_categoria_page.dart';
 import 'package:eli_market/pantallas/credito_menu_page.dart';
+import 'package:eli_market/pantallas/a_comprar_page.dart';
+import 'package:eli_market/pantallas/bienvenida_page.dart';
 
 import '../constantes.dart';
 
@@ -24,7 +24,7 @@ class _MenuPageState extends State<MenuPage> {
   void initState() {
     _paginas = [
       {'pagina': ListaCategoriaPage()},
-      {'pagina': ListaCategoriaPage()},
+      {'pagina': AComprarPage()},
       {'pagina': CreditoMenuPage()},
       {'pagina': RegistroCategoriaPage()},
     ];
@@ -138,7 +138,7 @@ class _MenuPageState extends State<MenuPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _disenioMenuBoton(0, "home.svg", "Inicio"),
-                    _disenioMenuBoton(1, "loupe.svg", "Buscar"),
+                    _disenioMenuBoton(1, "shopping-cart-5.svg", "A comprar"),
                   ],
                 ),
               ),
