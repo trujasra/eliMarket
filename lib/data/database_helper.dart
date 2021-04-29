@@ -491,7 +491,7 @@ class DataBaseHelper {
       int idProducto) async {
     var dbClient = await database;
     List<Map> map = await dbClient.rawQuery(
-        "SELECT * FROM $TABLA_PRODUCTO_BITACORA WHERE $ESTADO_REGISTRO = 1 AND $ID_PRODUCTO = $idProducto ORDER BY $FECHA_MODIFICACION DESC");
+        "SELECT * FROM $TABLA_PRODUCTO_BITACORA WHERE $ESTADO_REGISTRO = 1 AND $ID_PRODUCTO = $idProducto ORDER BY $FECHA_REGISTRO DESC");
     List<ProductoBitacora> listaProductoBitacora = [];
     if (map.length > 0) {
       for (var i = 0; i < map.length; i++) {

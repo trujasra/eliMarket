@@ -79,90 +79,99 @@ class DetalleProductoPage extends StatelessWidget {
                         File(oProducto.imagen),
                       ),
           )),
-          child: SingleChildScrollView(
-            child: Padding(
-                padding: EdgeInsets.all(6.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                oProducto.descProducto,
+                                style: GoogleFonts.montserratAlternates(
+                                    color: kPrimaryLigthColor,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Divider(
+                                color: Colors.pink[200],
+                                height: 2.0,
+                                thickness: 1,
+                              ),
+                              Text(
+                                oProducto.observacion,
+                                style: GoogleFonts.montserratAlternates(
+                                    color: kTextoLigthColor, fontSize: 16.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              oProducto.descProducto,
-                              style: GoogleFonts.montserratAlternates(
-                                  color: kPrimaryLigthColor,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold),
+                            Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                  color: kColorTarjeta,
+                                  borderRadius: BorderRadius.circular(30),
+                                  image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    // colorFilter: new ColorFilter.mode(
+                                    //     Colors.black.withOpacity(0.1),
+                                    //     BlendMode.dstATop),
+                                    image: oProducto.imagen == null ||
+                                            oProducto.imagen.isEmpty
+                                        ? AssetImage(
+                                            "assets/imagenes/producto_ninguno.png",
+                                          )
+                                        : oProducto.imagen.contains('assets/im')
+                                            ? AssetImage(
+                                                oProducto.imagen,
+                                              )
+                                            : FileImage(
+                                                File(oProducto.imagen),
+                                              ),
+                                  )),
                             ),
-                            Divider(
-                              color: Colors.pink[200],
-                              height: 2.0,
-                              thickness: 1,
+                            SizedBox(
+                              height: 10.0,
                             ),
                             Text(
-                              oProducto.observacion,
-                              style: GoogleFonts.montserratAlternates(
-                                  color: kTextoLigthColor, fontSize: 16.0),
+                              "Bs. ${oProducto.precio}",
+                              style: TextStyle(
+                                fontSize: 21.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              oProducto.fechaModificacion == null
+                                  ? "${oProducto.fechaRegistro}"
+                                  : "${oProducto.fechaModificacion}",
+                              style: TextStyle(
+                                  fontSize: 12.0, color: kPrimaryLigthColor),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                                color: kColorTarjeta,
-                                borderRadius: BorderRadius.circular(30),
-                                image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  // colorFilter: new ColorFilter.mode(
-                                  //     Colors.black.withOpacity(0.1),
-                                  //     BlendMode.dstATop),
-                                  image: oProducto.imagen == null ||
-                                          oProducto.imagen.isEmpty
-                                      ? AssetImage(
-                                          "assets/imagenes/producto_ninguno.png",
-                                        )
-                                      : oProducto.imagen.contains('assets/im')
-                                          ? AssetImage(
-                                              oProducto.imagen,
-                                            )
-                                          : FileImage(
-                                              File(oProducto.imagen),
-                                            ),
-                                )),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            "Bs. ${oProducto.precio}",
-                            style: TextStyle(
-                              fontSize: 21.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            oProducto.fechaModificacion == null
-                                ? "${oProducto.fechaRegistro}"
-                                : "${oProducto.fechaModificacion}",
-                            style: TextStyle(
-                                fontSize: 12.0, color: kPrimaryLigthColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )),
+                    ],
+                  )),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 20.0),
+          child: Text(
+            "Historial del producto",
+            style: TextStyle(color: kPrimaryLigthColor),
           ),
         ),
         Expanded(
@@ -301,6 +310,19 @@ class DetalleProductoPage extends StatelessWidget {
                                 fontSize: 20,
                                 color: kTextoDarkColor,
                                 fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            "${oProductoBitacora.fechaRegistro}",
+                            // overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: kTextoDarkColor,
+                                height: 1.5),
                           ),
                         ],
                       ),
