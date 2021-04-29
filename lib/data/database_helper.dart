@@ -9,6 +9,7 @@ import 'package:eli_market/models/categoria.dart';
 import 'package:eli_market/models/par_tipo_categoria.dart';
 import 'package:eli_market/models/producto.dart';
 import 'package:eli_market/models/producto_bitacora.dart';
+import 'package:eli_market/models/producto_a_comprar.dart';
 
 class DataBaseHelper {
   static final DataBaseHelper db = DataBaseHelper._();
@@ -21,6 +22,7 @@ class DataBaseHelper {
   static const String TABLA_CATEGORIA = 'Categoria';
   static const String TABLA_PRODUCTO = 'Producto';
   static const String TABLA_PRODUCTO_BITACORA = 'Producto_bitacora';
+  static const String TABLA_PRODUCTO_A_COMPRAR = 'Producto_a_comprar';
 
   // Campos para las tablas Bitacora
   static const String ESTADO_REGISTRO = 'estado_registro';
@@ -50,6 +52,9 @@ class DataBaseHelper {
   static const String ID_PRODUCTO_BITACORA = 'id_producto_bitacora';
   static const String USUARIO_REGISTRO_PROD = 'usuario_registro_prod';
   static const String FECHA_REGISTRO_PROD = 'fecha_registro_prod';
+
+  // Campos tabla PRODUCTO_A_COMPRAR
+  static const String ID_PRODUCTO_A_COMPRAR = 'id_producto_a_comprar';
 
   DataBaseHelper._();
 
@@ -84,15 +89,18 @@ class DataBaseHelper {
         "CREATE TABLE $TABLA_PRODUCTO ($ID_PRODUCTO INTEGER PRIMARY KEY AUTOINCREMENT, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO TEXT, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION TEXT)";
     String sqlProductoBitacora =
         "CREATE TABLE $TABLA_PRODUCTO_BITACORA ($ID_PRODUCTO_BITACORA INTEGER PRIMARY KEY AUTOINCREMENT, $ID_PRODUCTO INTEGER, $ID_CATEGORIA INTEGER, $DESC_PRODUCTO TEXT, $PRECIO DOUBLE, $OBSERVACION TEXT, $LUGAR_COMPRA TEXT, $IMAGEN TEXT, $USUARIO_REGISTRO_PROD TEXT, $FECHA_REGISTRO_PROD TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO TEXT, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION TEXT)";
+    String sqlProductoAComprar =
+        "CREATE TABLE $TABLA_PRODUCTO_A_COMPRAR ($ID_PRODUCTO_A_COMPRAR INTEGER PRIMARY KEY AUTOINCREMENT, $OBSERVACION TEXT, $ESTADO_REGISTRO BOOLEAN, $USUARIO_REGISTRO TEXT, $FECHA_REGISTRO TEXT, $USUARIO_MODIFICACION TEXT, $FECHA_MODIFICACION TEXT)";
 
     // Crea las tablas de la BD
     await db.execute(sqlParTipoCategoria);
     await db.execute(sqlCategoria);
     await db.execute(sqlProducto);
     await db.execute(sqlProductoBitacora);
+    await db.execute(sqlProductoAComprar);
 
     //String vDato = DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now());
-    // Insertar por defecto los tipo de categoria
+    //Insertar por defecto los tipo de categoria
     await db.execute(
         "INSERT INTO $TABLA_TIPO_CATEGORIA($ID_TIPO_CATEGORIA, $TIPO_CATEGORIA,$ESTADO_REGISTRO,$USUARIO_REGISTRO,$FECHA_REGISTRO) VALUES(?,?,?,?,?)",
         [
@@ -544,6 +552,79 @@ class DataBaseHelper {
 
     String vSql =
         "UPDATE $TABLA_PRODUCTO_BITACORA SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = '$vUsuarioModificacion', $FECHA_MODIFICACION = '$vFechaModificacion' WHERE $ID_PRODUCTO_BITACORA = $idProductoBitacora";
+    var resultado = await dbClient.rawUpdate(vSql);
+    return resultado;
+  }
+
+  // PRODUCTO A COMPRAR
+  // Operacion lista : Obtiene todos los productos a comparar de la BD
+  Future<List<ProductoAComprar>> obtieneProductoAComparar() async {
+    var dbClient = await database;
+    List<Map> map = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_PRODUCTO_A_COMPRAR WHERE $ESTADO_REGISTRO = 1 ORDER BY $FECHA_REGISTRO DESC");
+    List<ProductoAComprar> listaProductoAComprar = [];
+    if (map.length > 0) {
+      for (var i = 0; i < map.length; i++) {
+        listaProductoAComprar.add(ProductoAComprar.fromMap(map[i]));
+      }
+    }
+    return listaProductoAComprar;
+  }
+
+  // Operacion producto bitacora : Obtiene el registro por el identificador de producto a comparar  de la BD
+  Future<ProductoAComprar> obtieneProductoACompararPorId(
+      int idProductoAComprar) async {
+    var dbClient = await database;
+    List<Map> map = await dbClient.rawQuery(
+        "SELECT * FROM $TABLA_PRODUCTO_A_COMPRAR WHERE $ESTADO_REGISTRO = 1 AND $ID_PRODUCTO_A_COMPRAR = $idProductoAComprar");
+    ProductoAComprar productoAComprar = ProductoAComprar();
+    if (map.length > 0) {
+      productoAComprar = ProductoAComprar.fromMap(map[0]);
+    }
+    return productoAComprar;
+  }
+
+  // Operacion Adicionar : Registra el objeto Producto a comparar a la BD
+  Future<ProductoAComprar> registraProductoAComparar(
+      ProductoAComprar productoAComprar) async {
+    var dbClient = await database;
+
+    productoAComprar.estadoRegistro = true;
+    productoAComprar.usuarioRegistro = "ramiro.trujillo";
+    productoAComprar.fechaRegistro =
+        DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now());
+
+    productoAComprar.idProductoAComprar = await dbClient.insert(
+        TABLA_PRODUCTO_A_COMPRAR, productoAComprar.toMap());
+    return productoAComprar;
+  }
+
+  // Operacion actualizacion : Actualiza el objeto Producto a comparar a la BD
+  Future<int> actualizaProductoAComparar(
+      ProductoAComprar productoAComprar) async {
+    var dbClient = await database;
+
+    productoAComprar.usuarioModificacion = "ramiro.trujillo";
+    productoAComprar.fechaModificacion =
+        DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
+
+    var resultado = await dbClient.update(
+        TABLA_PRODUCTO_A_COMPRAR, productoAComprar.toMap(),
+        where: '$ID_PRODUCTO_A_COMPRAR = ?',
+        whereArgs: [productoAComprar.idProductoAComprar]);
+    return resultado;
+  }
+
+  // Operacion eliminacion : Eliminacion logica Estado_registro =0 objeto Producto a comparar a la BD
+  Future<int> eliminaProductoAComparar(int idProductoAComprar) async {
+    var dbClient = await database;
+
+    String vUsuarioModificacion = "ramiro.trujillo";
+    String vFechaModificacion =
+        DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
+
+    String vSql =
+        "UPDATE $TABLA_PRODUCTO_A_COMPRAR SET $ESTADO_REGISTRO = 0, $USUARIO_MODIFICACION = '$vUsuarioModificacion', $FECHA_MODIFICACION = '$vFechaModificacion' WHERE $ID_PRODUCTO_A_COMPRAR = $idProductoAComprar";
     var resultado = await dbClient.rawUpdate(vSql);
     return resultado;
   }

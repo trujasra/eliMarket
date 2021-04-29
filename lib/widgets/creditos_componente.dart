@@ -24,7 +24,7 @@ class CreditosComponente extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                "Para mi amor Elizabeth: ",
+                "Para mi amor Elizabeth Condori: ",
                 style: GoogleFonts.pacifico(
                     color: kTextoLigthColor, fontSize: 20.0),
               ),
