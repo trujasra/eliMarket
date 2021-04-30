@@ -13,10 +13,87 @@ import 'package:eli_market/pantallas/registro_producto_page.dart';
 import 'package:eli_market/pantallas/modificacion_producto_page.dart';
 import 'package:eli_market/pantallas/detalle_producto_page.dart';
 
-class ListaProductoPage extends StatelessWidget {
+class ListaProductoPage extends StatefulWidget {
   //final String miProducto;
   final Categoria oCategoria;
   ListaProductoPage({this.oCategoria});
+
+  @override
+  _ListaProductoPageState createState() =>
+      _ListaProductoPageState(this.oCategoria);
+}
+
+class _ListaProductoPageState extends State<ListaProductoPage> {
+  Widget cusBusquedaBar;
+
+  SvgPicture cusIconBusqueda = SvgPicture.asset(
+    "assets/icons/search.svg",
+    color: kTextoLigthColor,
+  );
+  SvgPicture cusIconBusquedaCancel = SvgPicture.asset(
+    "assets/icons/cancel-close.svg",
+    color: kTextoLigthColor,
+  );
+
+  _ListaProductoPageState(Categoria _oCategoria) {
+    cusBusquedaBar = Text(_oCategoria.descCategoria,
+        style: GoogleFonts.berkshireSwash(
+          color: kTextoLigthColor,
+        ));
+  }
+  bool _esBusqueda = false;
+
+  List todosProductos = [];
+  List itemsProducto = [];
+  TextEditingController _textoBusqueda = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    DataBaseHelper.db
+        .obtieneProductoPorIdCategoria(widget.oCategoria.idCategoria)
+        .then((data) {
+      setState(() {
+        todosProductos = data;
+        itemsProducto = todosProductos;
+      });
+    });
+  }
+
+  void filtroBusqueda(String consulta) {
+    var filtroBusquedaList = todosProductos;
+    // Verifica si existe datos para buscar
+    if (consulta.isNotEmpty) {
+      var filtroBusquedaData = [];
+
+      Producto producto;
+      filtroBusquedaList.forEach((element) {
+        producto = element;
+        // verifica si existe el nombre del producto
+        if (producto.descProducto
+                .toLowerCase()
+                .contains(consulta.toLowerCase()) ||
+            producto.observacion
+                .toLowerCase()
+                .contains(consulta.toLowerCase())) {
+          // Adiciona a la lsta de filtro.
+          filtroBusquedaData.add(element);
+        }
+      });
+      setState(() {
+        // limpia la lista de items del producto filtro
+        itemsProducto = [];
+        // Adiciona la lista filtrada.
+        itemsProducto.addAll(filtroBusquedaData);
+      });
+      return;
+    } else {
+      setState(() {
+        itemsProducto = [];
+        itemsProducto = todosProductos;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +113,23 @@ class ListaProductoPage extends StatelessWidget {
                 color: kTextoLigthColor),
           ),
           actions: [
-            IconButton(
-                icon: SvgPicture.asset(
-                  "assets/icons/search.svg",
-                  color: kTextoLigthColor,
-                ),
-                onPressed: () {}),
+            _esBusqueda
+                ? IconButton(
+                    icon: cusIconBusquedaCancel,
+                    onPressed: () {
+                      setState(() {
+                        _textoBusqueda.text = "";
+                        filtroBusqueda("");
+                        this._esBusqueda = false;
+                      });
+                    })
+                : IconButton(
+                    icon: cusIconBusqueda,
+                    onPressed: () {
+                      setState(() {
+                        this._esBusqueda = true;
+                      });
+                    }),
             IconButton(
                 icon: SvgPicture.asset("assets/icons/shopping-cart-1.svg",
                     color: kTextoLigthColor),
@@ -50,31 +138,47 @@ class ListaProductoPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => RegistroProductoPage(
-                                oCategoria: oCategoria,
+                                oCategoria: widget.oCategoria,
                               )));
                 }),
           ],
-          title: Text(oCategoria.descCategoria,
-              style: GoogleFonts.berkshireSwash(
-                color: kTextoLigthColor,
-              )),
+          title: !_esBusqueda
+              ? cusBusquedaBar
+              : TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      filtroBusqueda(value);
+                    });
+                  },
+                  controller: _textoBusqueda,
+                  style: TextStyle(color: Colors.white),
+                  autofocus: true,
+                  decoration: InputDecoration(
+                      hintText: "Ingrese texto a buscar",
+                      hintStyle: TextStyle(color: kTextoLigthColor),
+                      focusedBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(color: Colors.white))),
+                ),
+          // title: Text(widget.oCategoria.descCategoria,
+          //     style: GoogleFonts.berkshireSwash(
+          //       color: kTextoLigthColor,
+          //     )),
         ),
-        body: FutureBuilder(
-          future: DataBaseHelper.db
-              .obtieneProductoPorIdCategoria(oCategoria.idCategoria),
-          // initialData: InitialData,
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Producto>> snapshot) {
-            //print(snapshot.connectionState);
-            // Verifica si esta esperando la data
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else {
-              // retorna un lista de item.
-              return _listaProductos(snapshot.data);
-            }
-          },
-        ),
+        body: _listaProductos(),
+        // body: FutureBuilder(
+        //   future: DataBaseHelper.db
+        //       .obtieneProductoPorIdCategoria(widget.oCategoria.idCategoria),
+        //   builder:
+        //       (BuildContext context, AsyncSnapshot<List<Producto>> snapshot) {
+        //     // Verifica si esta esperando la data
+        //     if (snapshot.connectionState == ConnectionState.waiting) {
+        //       return Center(child: CircularProgressIndicator());
+        //     } else {
+        //       // retorna un lista de item.
+        //       return _listaProductos(snapshot.data);
+        //     }
+        //   },
+        // ),
       ),
     );
   }
@@ -86,12 +190,12 @@ class ListaProductoPage extends StatelessWidget {
             builder: (context) => MenuPage())); //Navigator.pop(context),
   }
 
-  Widget _listaProductos(List<Producto> listProducto) {
-    return listProducto.length > 0
+  Widget _listaProductos() {
+    return itemsProducto.length > 0
         ? ListView.builder(
-            itemCount: listProducto.length,
+            itemCount: itemsProducto.length,
             itemBuilder: (BuildContext context, int i) {
-              Producto oProducto = listProducto[i];
+              Producto oProducto = itemsProducto[i];
               // print(snapshot.data);
               return itemProducto(context, oProducto);
             })
@@ -101,6 +205,21 @@ class ListaProductoPage extends StatelessWidget {
                 "No existen productos \nPara adicionar haga clik en el carrito(+)"),
           );
   }
+  // Widget _listaProductos(List<Producto> listProducto) {
+  //   return listProducto.length > 0
+  //       ? ListView.builder(
+  //           itemCount: listProducto.length,
+  //           itemBuilder: (BuildContext context, int i) {
+  //             Producto oProducto = listProducto[i];
+  //             // print(snapshot.data);
+  //             return itemProducto(context, oProducto);
+  //           })
+  //       : Container(
+  //           padding: EdgeInsets.all(20.0),
+  //           child: Text(
+  //               "No existen productos \nPara adicionar haga clik en el carrito(+)"),
+  //         );
+  // }
 
   Widget itemProducto(BuildContext context, Producto oProducto) {
     return Padding(
@@ -242,7 +361,7 @@ class ListaProductoPage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ModificacionProductoPage(
-                          oCategoria: oCategoria,
+                          oCategoria: widget.oCategoria,
                           oProducto: pProducto,
                         )));
             break;
@@ -251,7 +370,7 @@ class ListaProductoPage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => DetalleProductoPage(
-                          oCategoria: oCategoria,
+                          oCategoria: widget.oCategoria,
                           oProducto: pProducto,
                         )));
             break;
@@ -323,7 +442,6 @@ class ListaProductoPage extends StatelessWidget {
         });
   }
 
-  //Metodo para eliminar la informacion del producto
   void eliminarRegistroProducto(BuildContext context, Producto producto) {
     // Se envia para eliminar el producto
     DataBaseHelper.db.eliminaProducto(producto.idProducto);
@@ -340,6 +458,8 @@ class ListaProductoPage extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (BuildContext context) =>
-                ListaProductoPage(oCategoria: oCategoria)));
+                ListaProductoPage(oCategoria: widget.oCategoria)));
   }
 }
+
+class DbHelper {}
